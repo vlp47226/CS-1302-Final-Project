@@ -18,30 +18,14 @@ public class TwentyFortyEight extends Application {
     @Override
     public void start(Stage stage) {
         gameName = new Text("2048");
-        gameName.setfont(Font.font("clear sans", 20));
-        gameName.setFill(Color.Black);
+        gameName.setFont(Font.font("clear sans", 20));
+        gameName.setFill(Color.BLACK);
         
 
 
 
 
     }//start
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
