@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
+import javafx.scene.control.Button;
 
 public class TwentyFortyEight extends Application {
 
@@ -24,6 +25,7 @@ public class TwentyFortyEight extends Application {
     VBox vbox;
     HBox hbox;
     TilePane tilePane;
+    Button newGame;
     
 
     @Override
@@ -31,10 +33,11 @@ public class TwentyFortyEight extends Application {
         gameName = new Text("2048");
         gameName.setFont(Font.font("clear sans", 50));
         gameName.setFill(Color.BLACK);
-        label = new Label("Score: 0");
+        label = new Label("Score\n0");
         score = 0;
         vbox = new VBox();
         hbox = new HBox();
+        newGame = new Button("New Game");
         tilePane = new TilePane(5, 5);
         tilePane.setPrefColumns(4);
         tilePane.setPrefRows(4);
@@ -45,7 +48,7 @@ public class TwentyFortyEight extends Application {
         hbox.getChildren().addAll(gameName, label);
         tilePane.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
         
-        vbox.getChildren().addAll(hbox, tilePane);
+        vbox.getChildren().addAll(hbox,newGame, tilePane);
         
 
         Scene scene = new Scene(vbox, 640, 480);
@@ -99,7 +102,7 @@ public class TwentyFortyEight extends Application {
 
     public void addToScore(int x){
         score += x;
-        label = new Label("Score: " + score);
+        label = new Label("Score\n" + score);
         hbox.getChildren().set(1, label);
     }
 
