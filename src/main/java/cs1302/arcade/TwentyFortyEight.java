@@ -38,15 +38,12 @@ public class TwentyFortyEight extends Application {
         vbox = new VBox();
         hbox = new HBox();
         newGame = new Button("New Game");
-        tilePane = new TilePane(5, 5);
-        tilePane.setPrefColumns(4);
-        tilePane.setPrefRows(4);
-        for(int i = 0; i < 16; i++){
-            tilePane.getChildren().add(new VBox());
-        }
+        tilePane = new TilePane();
+        testAddBlocks();
+        tilePane.setPrefColumns(4);   
         hbox.setSpacing(450.0);
         hbox.getChildren().addAll(gameName, label);
-        tilePane.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
+        //tilePane.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
         
         vbox.getChildren().addAll(hbox,newGame, tilePane);
         
@@ -105,6 +102,10 @@ public class TwentyFortyEight extends Application {
         label = new Label("Score\n" + score);
         hbox.getChildren().set(1, label);
     }
-
-
+    public void testAddBlocks(){
+        tilePane.getChildren().addAll(new Block(2,false),new Block(4,false),new Block(8,false),
+                                      new Block(16,false),new Block(32,false),new Block(64,false),
+                                      new Block(128,false),new Block(256,false),new Block(512,false),
+                                      new Block(1024,false),new Block(2048,false));
+    }
 }//TwentyFortyEight
