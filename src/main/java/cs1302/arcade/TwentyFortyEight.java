@@ -39,21 +39,27 @@ public class TwentyFortyEight extends Application {
         hbox = new HBox();
         newGame = new Button("New Game");
         tilePane = new TilePane();
+        tilePane.setPrefColumns(4);
+        tilePane.setPrefRows(4);
+        tilePane.setPrefTileWidth(100.0);
+        tilePane.setPrefTileHeight(100.0);
+        tilePane.setHgap(5.0);
+        tilePane.setVgap(5.0);
         testAddBlocks();
-        tilePane.setPrefColumns(4);   
-        hbox.setSpacing(450.0);
+        hbox.setSpacing(200.0);
         hbox.getChildren().addAll(gameName, label);
-        //tilePane.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
+        tilePane.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
         
         vbox.getChildren().addAll(hbox,newGame, tilePane);
         
 
-        Scene scene = new Scene(vbox, 640, 480);
+        Scene scene = new Scene(vbox, 450, 580);
         stage.setTitle("cs1302-arcade!");
         stage.setScene(scene);
         stage.sizeToScene();
+        stage.setResizable(false);
         stage.show();
-
+        tilePane.requestFocus();
 
 
     }//start
@@ -106,6 +112,8 @@ public class TwentyFortyEight extends Application {
         tilePane.getChildren().addAll(new Block(2,false),new Block(4,false),new Block(8,false),
                                       new Block(16,false),new Block(32,false),new Block(64,false),
                                       new Block(128,false),new Block(256,false),new Block(512,false),
-                                      new Block(1024,false),new Block(2048,false));
+                                      new Block(1024,false),new Block(2048,false),new Block(2,false),
+                                      new Block(2,false),new Block(2,false),new Block(2,false),
+                                      new Block(2,false));
     }
 }//TwentyFortyEight
