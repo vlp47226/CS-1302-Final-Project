@@ -16,6 +16,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.control.Label;
 import javafx.scene.layout.TilePane;
 import javafx.scene.control.Button;
+import java.lang.Thread;
+import javafx.application.Platform;
 
 public class TwentyFortyEight extends Application {
 
@@ -26,6 +28,7 @@ public class TwentyFortyEight extends Application {
     HBox hbox;
     TilePane tilePane;
     Button newGame;
+    public Block[] blocks;
     
 
     @Override
@@ -37,6 +40,7 @@ public class TwentyFortyEight extends Application {
         score = 0;
         vbox = new VBox();
         hbox = new HBox();
+        blocks = new Block[16];
         newGame = new Button("New Game");
         tilePane = new TilePane();
         tilePane.setPrefColumns(4);
@@ -48,7 +52,7 @@ public class TwentyFortyEight extends Application {
         testAddBlocks();
         hbox.setSpacing(200.0);
         hbox.getChildren().addAll(gameName, label);
-        tilePane.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
+        vbox.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
         
         vbox.getChildren().addAll(hbox,newGame, tilePane);
         
@@ -88,13 +92,122 @@ public class TwentyFortyEight extends Application {
     } // createKeyHandler
     
     public void shiftToRight(){
+        boolean possible = false;
+        for(int i = 0; i<16; i++){
+            System.out.println(blocks[i].blockEmpty());
+            if(blocks[i].blockEmpty()){
+                possible = true;
+            }
+        }
+        if(possible){
+            System.out.println("Worked Here lol");
+            for(int i = 2; i >= 0; i--){
+                for (int j = i+1; j <= 3; j++) {
+                    if(blocks[j-1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        blocks[j] = blocks[j-1];
+                        blocks[j-1] = new Block();      
+                    }
+                }
+            }
+            for(int i = 6; i >= 4; i--){
+                for (int j = i+1; j <= 7; j++) {
+                    if(blocks[j-1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        blocks[j] = blocks[j-1];
+                        blocks[j-1] = new Block();          
+                    }
+                }
+            }
+            for(int i = 10; i >= 8; i--){
+                for (int j = i+1; j <= 11; j++) {
+                    if(blocks[j-1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        System.out.println(i);
+                        blocks[j] = blocks[j-1];
+                        blocks[j-1] = new Block();         
+                    }
+                }
+            }
+            for(int i = 14; i >= 12; i--){
+                for (int j = i+1; j <= 15; j++) {
+                    if(blocks[j-1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        blocks[j] = blocks[j-1];
+                        blocks[j-1] = new Block();         
+                    }
+                }
+            }
+        }
+        tilePane = new TilePane();
+        tilePane.setPrefColumns(4);
+        tilePane.setPrefRows(4);
+        tilePane.setPrefTileWidth(100.0);
+        tilePane.setPrefTileHeight(100.0);
+        tilePane.setHgap(5.0);
+        tilePane.setVgap(5.0);
+        for (int i = 0; i < 16; i++) {
+            tilePane.getChildren().add(blocks[i]);
+        }
+        vbox.getChildren().set(2, tilePane);
 
     }
 
     public void shiftToLeft(){
+        boolean possible = false;
+        for(int i = 0; i<16; i++){
+            System.out.println(blocks[i].blockEmpty());
+            if(blocks[i].blockEmpty()){
+                possible = true;
+            }
+        }
+        if(possible){
+            System.out.println("Worked Here lol");
+            for(int i = 1; i <= 3; i++){
+                for (int j = i-1; j >= 0; j--) {
+                    if(blocks[j+1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        blocks[j] = blocks[j+1];
+                        blocks[j+1] = new Block();      
+                    }
+                }
+            }
+            for(int i = 5; i <= 7; i++){
+                for (int j = i-1; j >= 4; j--) {
+                    if(blocks[j+1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        blocks[j] = blocks[j+1];
+                        blocks[j+1] = new Block();          
+                    }
+                }
+            }
+            for(int i = 9; i <= 11; i++){
+                for (int j = i-1; j >= 8; j--) {
+                    if(blocks[j+1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        System.out.println(i);
+                        blocks[j] = blocks[j+1];
+                        blocks[j+1] = new Block();         
+                    }
+                }
+            }
+            for(int i = 13; i <= 15; i++){
+                for (int j = i-1; j >= 12; j--) {
+                    if(blocks[j+1].blockEmpty()==false&&blocks[j].blockEmpty()==true){
+                        blocks[j] = blocks[j+1];
+                        blocks[j+1] = new Block();         
+                    }
+                }
+            }
+        }
+        tilePane = new TilePane();
+        tilePane.setPrefColumns(4);
+        tilePane.setPrefRows(4);
+        tilePane.setPrefTileWidth(100.0);
+        tilePane.setPrefTileHeight(100.0);
+        tilePane.setHgap(5.0);
+        tilePane.setVgap(5.0);
+        for (int i = 0; i < 16; i++) {
+            tilePane.getChildren().add(blocks[i]);
+
+        }
+        vbox.getChildren().set(2,tilePane);
 
     }
-
+    
     public void shiftToUp(){
 
     }
@@ -109,11 +222,16 @@ public class TwentyFortyEight extends Application {
         hbox.getChildren().set(1, label);
     }
     public void testAddBlocks(){
-        tilePane.getChildren().addAll(new Block(2,false),new Block(4,false),new Block(8,false),
-                                      new Block(16,false),new Block(32,false),new Block(64,false),
-                                      new Block(128,false),new Block(256,false),new Block(512,false),
-                                      new Block(1024,false),new Block(2048,false),new Block(2,false),
-                                      new Block(2,false),new Block(2,false),new Block(2,false),
-                                      new Block(2,false));
+        blocks = new Block[]{new Block(2,false),new Block(),new Block(8,false),
+                  new Block(16,false),new Block(),new Block(64,false),
+                  new Block(128,false),new Block(256,false),new Block(),
+                  new Block(1024,false),new Block(),new Block(2,false),
+                             new Block(),new Block(2, false),new Block(),
+                  new Block()};
+        tilePane.getChildren().addAll(new Block(2,false),new Block(),new Block(8,false),
+                                      new Block(16,false),new Block(),new Block(64,false),
+                                      new Block(128,false),new Block(256,false),new Block(),
+                                      new Block(1024,false),new Block(),new Block(2,false),
+                                      new Block(),new Block(2,false),new Block(),new Block());
     }
 }//TwentyFortyEight

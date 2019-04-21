@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Block extends VBox{
+    public boolean isEmpty;
     public boolean isCombined;
     public int valueInside;
     ImageView iv;
@@ -16,13 +17,20 @@ public class Block extends VBox{
     public Block(){
         super();
         setImageArray();
+        iv = new ImageView();
+        isCombined = false;
+        isEmpty = true;
+    }
+    public Block(boolean isEmpty){
+        super();
+        setImageArray();
         int random = ThreadLocalRandom.current().nextInt(0, 2);
         valueInside = randomNum[random];
         iv = new ImageView(i[random]);
         isCombined = false;
+        this.isEmpty = isEmpty;
         this.getChildren().add(iv);
     }
-    
     public Block(int value, boolean combined){
         super();
         setImageArray();
@@ -35,9 +43,18 @@ public class Block extends VBox{
         }
         iv = new ImageView(i[index]);
         isCombined = combined;
+        isEmpty = false;
         this.getChildren().add(iv);
     }
 
+    public void setIsEmpty(boolean isEmpty){
+        this.isEmpty = isEmpty;
+    }
+    
+    public boolean blockEmpty(){
+        return isEmpty;
+    }
+    
     public void setImageArray(){
         i = new Image[11];
         i[0] = new Image("file:src/main/resources/2.png");
