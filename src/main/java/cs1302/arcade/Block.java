@@ -51,8 +51,24 @@ public class Block extends VBox{
         this.isEmpty = isEmpty;
     }
     
-    public boolean blockEmpty(){
+    public boolean getIsEmpty(){
         return isEmpty;
+    }
+
+    public void setValue(int a){
+        valueInside = a;
+    }
+
+    public int getValue(){
+        return valueInside;
+    }
+
+    public boolean isCombinedBlock(){
+        return isCombined;
+    }
+
+    public void setIsCombined(boolean combined){
+        isCombined = combined;
     }
     
     public void setImageArray(){
