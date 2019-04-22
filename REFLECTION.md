@@ -24,3 +24,11 @@ Here is a sample entry (delete this line; also: feel free to copy/paste/modify):
 2. **TODO:** Get the images to the tilepane, be able to move around, and detect collision working.
 
 3. **PROB:** It is hard to schedule around events and classes, but we are working on it.
+
+## TUE 2019-04-23 @ 11:55 PM EST
+
+1. **DONE:** We added code to put the Images in the Blocks, added a skeleton menu which holds a few buttons, Fixed the size of 2048, added movement controls for all directions of 2048, and added code to combine the blocks.
+
+2. **TODO:** Get the game working perfectly, with score and entering, exiting, and tutorial working. Then start coding our next game, which we will decide.
+
+3. **PROB:** It is hard to schedule around events and classes, but we are working on it.
