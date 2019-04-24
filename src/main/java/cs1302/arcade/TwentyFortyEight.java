@@ -1,6 +1,7 @@
 package cs1302.arcade;
 
 //imports
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
@@ -22,6 +23,7 @@ import javafx.application.Platform;
 public class TwentyFortyEight extends Application {
 
     Text gameName;
+    Text direction;
     Label label;
     public int score;
     VBox vbox;
@@ -36,6 +38,9 @@ public class TwentyFortyEight extends Application {
         gameName = new Text("2048");
         gameName.setFont(Font.font("clear sans", 50));
         gameName.setFill(Color.BLACK);
+        direction = new Text("Let's Move!");
+        direction.setFont(Font.font("clear sans", 40));
+        direction.setFill(Color.BLACK);
         label = new Label("Score\n0");
         score = 0;
         vbox = new VBox();
@@ -54,10 +59,10 @@ public class TwentyFortyEight extends Application {
         hbox.getChildren().addAll(gameName, label);
         vbox.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
         
-        vbox.getChildren().addAll(hbox,newGame, tilePane);
+        vbox.getChildren().addAll(hbox,newGame, tilePane, direction);
         
 
-        Scene scene = new Scene(vbox, 450, 580);
+        Scene scene = new Scene(vbox, 450, 680);
         stage.setTitle("cs1302-arcade!");
         stage.setScene(scene);
         stage.sizeToScene();
@@ -92,80 +97,24 @@ public class TwentyFortyEight extends Application {
     } // createKeyHandler
     
     public void shiftToRight(){
+        direction.setText("Right");
         boolean possible = false;
         for(int i = 0; i<16; i++){
-            System.out.println(blocks[i].getIsEmpty());
-            if(blocks[i].getIsEmpty()){
-                possible = true;
-            }
+            if (blocks[i].getIsEmpty()){possible = true;}
+            else if (i < 3 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
+            else if (i < 7 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
+            else if (i < 11 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
+            else if (i < 15 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
         }
         if(possible){
             System.out.println("Worked Here lol");
-            for(int i = 2; i >= 0; i--){
-                for (int j = i+1; j <= 3; j++) {
-                    if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j-1];
-                        blocks[j-1] = new Block();      
-                    }
-                    else if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-1].getValue()
-                            && blocks[j-1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j-1].getValue()+blocks[j].getValue()),true);
-                        blocks[j-1] = new Block();
-                    }
-                        
-                }
-            }
-            for(int i = 6; i >= 4; i--){
-                for (int j = i+1; j <= 7; j++) {
-                    if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j-1];
-                        blocks[j-1] = new Block();          
-                    }
-                    else if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-1].getValue()
-                            && blocks[j-1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j-1].getValue()+blocks[j].getValue()),true);
-                        blocks[j-1] = new Block();
-                    }
-                }
-            }
-            for(int i = 10; i >= 8; i--){
-                for (int j = i+1; j <= 11; j++) {
-                    if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        System.out.println(i);
-                        blocks[j] = blocks[j-1];
-                        blocks[j-1] = new Block();         
-                    }
-                    else if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-1].getValue()
-                            && blocks[j-1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j].getValue()+blocks[j-1].getValue()),true);
-                        blocks[j-1] = new Block();
-                    }
-                }
-            }
-            for(int i = 14; i >= 12; i--){
-                for (int j = i+1; j <= 15; j++) {
-                    if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j-1];
-                        blocks[j-1] = new Block();         
-                    }
-                    else if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-1].getValue()
-                            && blocks[j-1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j].getValue()+blocks[j-1].getValue()),true);
-                        blocks[j-1] = new Block();
-                    }
-                }
-            }
+            shiftRightHelper(0,2);
+            shiftRightHelper(4,6);
+            shiftRightHelper(8,10);
+            shiftRightHelper(12,14);
+            randomPlace();
         }
         for(Block b: blocks){
-            System.out.println(b.getValue());
             b.setIsCombined(false);
         }
         tilePane = new TilePane();
@@ -180,82 +129,55 @@ public class TwentyFortyEight extends Application {
         }
         vbox.getChildren().set(2, tilePane);
 
+    }
+    public void shiftRightHelper(int indexOne, int indexTwo){
+        for(int i = indexTwo; i >= indexOne; i--){
+            for (int j = i+1; j <= indexTwo+1; j++) {
+                if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
+                    blocks[j] = blocks[j-1];
+                    blocks[j-1] = new Block();      
+                }
+                else if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
+                        && blocks[j].getValue() == blocks[j-1].getValue()
+                        && blocks[j-1].isCombinedBlock()==false
+                        && blocks[j].isCombinedBlock()==false){
+                    blocks[j] = new Block((blocks[j-1].getValue()+blocks[j].getValue()),true);
+                    blocks[j-1] = new Block();
+                    addToScore(blocks[j].getValue());
+                }
+            }
+        }
     }
 
     public void shiftToLeft(){
+        direction.setText("Left");
         boolean possible = false;
         for(int i = 0; i<16; i++){
-            System.out.println(blocks[i].getIsEmpty());
             if(blocks[i].getIsEmpty()){
+                possible = true;
+            }
+            else if (i < 4 && i > 1 && blocks[i-1].getValue()==blocks[i].getValue()){
+                possible = true;
+            }
+            else if (i < 8 && i > 5 && blocks[i-1].getValue()==blocks[i].getValue()){
+                possible = true;
+            }
+            else if (i < 12 && i > 9 && blocks[i-1].getValue()==blocks[i].getValue()){
+                possible = true;
+            }
+            else if (i < 16 && i > 13 && blocks[i-1].getValue()==blocks[i].getValue()){
                 possible = true;
             }
         }
         if(possible){
             System.out.println("Worked Here lol");
-            for(int i = 1; i <= 3; i++){
-                for (int j = i-1; j >= 0; j--) {
-                    if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j+1];
-                        blocks[j+1] = new Block();      
-                    }
-                    else if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+1].getValue()
-                            && blocks[j+1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+1].getValue()+blocks[j].getValue()),true);
-                        blocks[j+1] = new Block();
-                    }
-                }
-            }
-            for(int i = 5; i <= 7; i++){
-                for (int j = i-1; j >= 4; j--) {
-                    if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j+1];
-                        blocks[j+1] = new Block();          
-                    }
-                    else if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+1].getValue()
-                            && blocks[j+1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+1].getValue()+blocks[j].getValue()),true);
-                        blocks[j+1] = new Block();
-                    }
-                }
-            }
-            for(int i = 9; i <= 11; i++){
-                for (int j = i-1; j >= 8; j--) {
-                    if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        System.out.println(i);
-                        blocks[j] = blocks[j+1];
-                        blocks[j+1] = new Block();         
-                    }
-                    else if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+1].getValue()
-                            && blocks[j+1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+1].getValue()+blocks[j].getValue()),true);
-                        blocks[j+1] = new Block();
-                    }
-                }
-            }
-            for(int i = 13; i <= 15; i++){
-                for (int j = i-1; j >= 12; j--) {
-                    if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j+1];
-                        blocks[j+1] = new Block();         
-                    }
-                    else if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+1].getValue()
-                            && blocks[j+1].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+1].getValue()+blocks[j].getValue()),true);
-                        blocks[j+1] = new Block();
-                    }
-                }
-            }
+            shiftLeftHelper(1,3);
+            shiftLeftHelper(5,7);
+            shiftLeftHelper(9,11);
+            shiftLeftHelper(13,15);
+            randomPlace();
         }
         for(Block b: blocks){
-            System.out.println(b.getValue());
             b.setIsCombined(false);
         }
         tilePane = new TilePane();
@@ -265,88 +187,46 @@ public class TwentyFortyEight extends Application {
         tilePane.setPrefTileHeight(100.0);
         tilePane.setHgap(5.0);
         tilePane.setVgap(5.0);
-        for (int i = 0; i < 16; i++) {
-            tilePane.getChildren().add(blocks[i]);
-
-        }
+        for (int i = 0; i < 16; i++){tilePane.getChildren().add(blocks[i]);}
         vbox.getChildren().set(2,tilePane);
+    }
 
+    public void shiftLeftHelper(int indexOne, int indexTwo){
+        for(int i = indexOne; i <= indexTwo; i++){
+            for(int j = i-1; j >= indexOne-1; j--) {
+                if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
+                    blocks[j] = blocks[j+1];
+                    blocks[j+1] = new Block();      
+                }
+                else if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
+                        && blocks[j].getValue() == blocks[j+1].getValue()
+                        && blocks[j+1].isCombinedBlock()==false
+                        && blocks[j].isCombinedBlock()==false){
+                    blocks[j] = new Block((blocks[j+1].getValue()+blocks[j].getValue()),true);
+                    blocks[j+1] = new Block();
+                    addToScore(blocks[j].getValue());
+                }
+            }
+        }
     }
     
     public void shiftToUp(){
+        direction.setText("Up");
         boolean possible = false;
         for(int i = 0; i<16; i++){
-            System.out.println(blocks[i].getIsEmpty());
             if(blocks[i].getIsEmpty()){
                 possible = true;
             }
+            else if (i > 4 && blocks[i-4].getValue()==blocks[i].getValue()){possible = true;}
         }
         if(possible){
-            System.out.println("Worked Here lol");
-            for(int i = 4; i <= 12; i= i+4){
-                for (int j = i-4; j >= 0; j=j-4) {
-                    if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j+4];
-                        blocks[j+4] = new Block();      
-                    }
-                    else if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+4].getValue()
-                            && blocks[j+4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+4].getValue()+blocks[j].getValue()),true);
-                        blocks[j+4] = new Block();
-                    }
-                }
-            }
-            for(int i = 5; i <= 13; i=i+4){
-                for (int j = i-4; j >= 1; j=j-4) {
-                    if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j+4];
-                        blocks[j+4] = new Block();          
-                    }
-                    else if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+4].getValue()
-                            && blocks[j+4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+4].getValue()+blocks[j].getValue()),true);
-                        blocks[j+4] = new Block();
-                    }
-                }
-            }
-            for(int i = 6; i <= 14; i=i+4){
-                for (int j = i-4; j >= 2; j=j-4) {
-                    if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        System.out.println(i);
-                        blocks[j] = blocks[j+4];
-                        blocks[j+4] = new Block();         
-                    }
-                    else if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+4].getValue()
-                            && blocks[j+4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+4].getValue()+blocks[j].getValue()),true);
-                        blocks[j+4] = new Block();
-                    }
-                }
-            }
-            for(int i = 7; i <= 15; i=i+4){
-                for (int j = i-4; j >= 3; j=j-4) {
-                    if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j+4];
-                        blocks[j+4] = new Block();         
-                    }
-                    else if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j+4].getValue()
-                            && blocks[j+4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j+4].getValue()+blocks[j].getValue()),true);
-                        blocks[j+4] = new Block();
-                    }
-                }
-            }
+            shiftUpHelper(4,12);
+            shiftUpHelper(5,13);
+            shiftUpHelper(6,14);
+            shiftUpHelper(7,15);
+            randomPlace();
         }
         for(Block b: blocks){
-            System.out.println(b.getValue());
             b.setIsCombined(false);
         }
         tilePane = new TilePane();
@@ -363,78 +243,42 @@ public class TwentyFortyEight extends Application {
         vbox.getChildren().set(2,tilePane);
     }
 
+    public void shiftUpHelper(int indexOne, int indexTwo){
+        for(int i = indexOne; i <= indexTwo; i=i+4){
+            for (int j = i-4; j >= indexOne-4; j=j-4) {
+                if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
+                    blocks[j] = blocks[j+4];
+                    blocks[j+4] = new Block();         
+                }
+                else if(blocks[j+4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
+                        && blocks[j].getValue() == blocks[j+4].getValue()
+                        && blocks[j+4].isCombinedBlock()==false
+                        && blocks[j].isCombinedBlock()==false){
+                    blocks[j] = new Block((blocks[j+4].getValue()+blocks[j].getValue()),true);
+                    blocks[j+4] = new Block();
+                    addToScore(blocks[j].getValue());
+                }
+            }
+        }
+    }
+
     public void shiftToDown(){
+        direction.setText("Down");
         boolean possible = false;
         for(int i = 0; i<16; i++){
             System.out.println(blocks[i].getIsEmpty());
             if(blocks[i].getIsEmpty()){
                 possible = true;
             }
+            else if (i < 12 && blocks[i+4].getValue()==blocks[i].getValue()){possible = true;}
         }
         if(possible){
             System.out.println("Worked Here lol");
-            for(int i = 8; i >= 0; i=i-4){
-                for (int j = i+4; j <= 12; j=j+4) {
-                    if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j-4];
-                        blocks[j-4] = new Block();      
-                    }
-                    else if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-4].getValue()
-                            && blocks[j-4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j-4].getValue()+blocks[j].getValue()),true);
-                        blocks[j-4] = new Block();
-                    }
-                        
-                }
-            }
-            for(int i = 9; i >= 1; i=i-4){
-                for (int j = i+4; j <= 13; j=j+4) {
-                    if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j-4];
-                        blocks[j-4] = new Block();          
-                    }
-                    else if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-4].getValue()
-                            && blocks[j-4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j-4].getValue()+blocks[j].getValue()),true);
-                        blocks[j-4] = new Block();
-                    }
-                }
-            }
-            for(int i = 10; i >= 2; i=i-4){
-                for (int j = i+4; j <= 14; j=j+4) {
-                    if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        System.out.println(i);
-                        blocks[j] = blocks[j-4];
-                        blocks[j-4] = new Block();         
-                    }
-                    else if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-4].getValue()
-                            && blocks[j-4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j].getValue()+blocks[j-4].getValue()),true);
-                        blocks[j-4] = new Block();
-                    }
-                }
-            }
-            for(int i = 11; i >= 3; i = i-4){
-                for (int j = i+4; j <= 15; j = j+4) {
-                    if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                        blocks[j] = blocks[j-4];
-                        blocks[j-4] = new Block();         
-                    }
-                    else if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
-                            && blocks[j].getValue() == blocks[j-4].getValue()
-                            && blocks[j-4].isCombinedBlock()==false
-                            && blocks[j].isCombinedBlock()==false){
-                        blocks[j] = new Block((blocks[j].getValue()+blocks[j-4].getValue()),true);
-                        blocks[j-4] = new Block();
-                    }
-                }
-            }
+            shiftDownHelper(0,8);
+            shiftDownHelper(1,9);
+            shiftDownHelper(2,10);
+            shiftDownHelper(3,11);
+            randomPlace();
         }
         for(Block b: blocks){
             System.out.println(b.getValue());
@@ -451,6 +295,25 @@ public class TwentyFortyEight extends Application {
             tilePane.getChildren().add(blocks[i]);
         }
         vbox.getChildren().set(2, tilePane);
+    }
+
+    public void shiftDownHelper(int indexOne, int indexTwo){
+        for(int i = indexTwo; i >= indexOne; i = i-4){
+            for (int j = i+4; j <= indexTwo+4; j = j+4) {
+                if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
+                    blocks[j] = blocks[j-4];
+                    blocks[j-4] = new Block();         
+                }
+                else if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
+                        && blocks[j].getValue() == blocks[j-4].getValue()
+                        && blocks[j-4].isCombinedBlock()==false
+                        && blocks[j].isCombinedBlock()==false){
+                    blocks[j] = new Block((blocks[j].getValue()+blocks[j-4].getValue()),true);
+                    blocks[j-4] = new Block();
+                    addToScore(blocks[j].getValue());
+                }
+            }
+        }
     }
 
     public void addToScore(int x){
@@ -459,16 +322,24 @@ public class TwentyFortyEight extends Application {
         hbox.getChildren().set(1, label);
     }
     public void testAddBlocks(){
-        blocks = new Block[]{new Block(2,false),new Block(),new Block(2,false),
-                  new Block(2,false),new Block(),new Block(2,false),
-                  new Block(2,false),new Block(2,false),new Block(),
-                  new Block(2,false),new Block(),new Block(2,false),
-                             new Block(2,false),new Block(2, false),new Block(2,false),
-                             new Block(2, false)};
-        tilePane.getChildren().addAll(new Block(2,false),new Block(),new Block(2,false),
-                                      new Block(2,false),new Block(),new Block(2,false),
-                                      new Block(2,false),new Block(2,false),new Block(),
-                                      new Block(2,false),new Block(),new Block(2,false),
-                                      new Block(2,false),new Block(2,false),new Block(2,false),new Block(2,false));
+        blocks = new Block[16];
+        for(int i = 0; i < 16; i++){
+            blocks[i]= new Block();
+        }
+        randomPlace();
+        randomPlace();
+        for(Block b: blocks){
+            tilePane.getChildren().add(b);
+        }
+    }
+    public void randomPlace(){
+        boolean isPlaced = false;
+        while(!isPlaced){
+            int random = ThreadLocalRandom.current().nextInt(0, 16);
+            if(blocks[random].getIsEmpty()){
+                blocks[random] = new Block(false);
+                isPlaced = true;
+            }
+        }
     }
 }//TwentyFortyEight
