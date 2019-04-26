@@ -19,6 +19,7 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.control.Button;
 import java.lang.Thread;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 
 public class TwentyFortyEight extends Application {
 
@@ -128,6 +129,12 @@ public class TwentyFortyEight extends Application {
             tilePane.getChildren().add(blocks[i]);
         }
         vbox.getChildren().set(2, tilePane);
+        if(!checkPossible()){
+            youLoseXD();
+        }
+        if(checkWin()){
+            youWin();
+        }
 
     }
     public void shiftRightHelper(int indexOne, int indexTwo){
@@ -189,6 +196,13 @@ public class TwentyFortyEight extends Application {
         tilePane.setVgap(5.0);
         for (int i = 0; i < 16; i++){tilePane.getChildren().add(blocks[i]);}
         vbox.getChildren().set(2,tilePane);
+        if(!checkPossible()){
+            youLoseXD();
+        }
+        if(checkWin()){
+            youWin();
+        }
+        
     }
 
     public void shiftLeftHelper(int indexOne, int indexTwo){
@@ -241,6 +255,12 @@ public class TwentyFortyEight extends Application {
 
         }
         vbox.getChildren().set(2,tilePane);
+        if(!checkPossible()){
+            youLoseXD();
+        }
+        if(checkWin()){
+            youWin();
+        }
     }
 
     public void shiftUpHelper(int indexOne, int indexTwo){
@@ -295,6 +315,12 @@ public class TwentyFortyEight extends Application {
             tilePane.getChildren().add(blocks[i]);
         }
         vbox.getChildren().set(2, tilePane);
+        if(!checkPossible()){
+            youLoseXD();
+        }
+        if(checkWin()){
+            youWin();
+        }
     }
 
     public void shiftDownHelper(int indexOne, int indexTwo){
@@ -337,9 +363,62 @@ public class TwentyFortyEight extends Application {
         while(!isPlaced){
             int random = ThreadLocalRandom.current().nextInt(0, 16);
             if(blocks[random].getIsEmpty()){
-                blocks[random] = new Block(false);
+                blocks[random] = new Block(1024,false);
                 isPlaced = true;
             }
         }
+    }
+
+    public void youLoseXD(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("You Lose!\nYour Score: "+score+
+                             "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.showAndWait();
+    }
+    public boolean checkPossible(){
+        for(int i = 0; i < 16; i++){
+            if(i >= 0 && i < 3){
+                if(checkRight(i)||checkDown(i)||blocks[i]==null){return true;}
+            }
+            else if(i==3){if(checkDown(i)){return true;}}
+            else if(i >= 4 && i < 7){
+                if(checkRight(i)||checkDown(i)||blocks[i]==null){return true;}
+            }
+            else if(i==7){if(checkDown(i)){return true;}}
+            else if(i >= 8 && i < 11){
+                if(checkRight(i)||checkDown(i)||blocks[i]==null){return true;}
+            }
+            else if(i==11){if(checkDown(i)){return true;}}
+            else if(i >= 12 && i < 15){
+                if(checkRight(i)||blocks[i]==null){return true;}
+            }
+        }
+        return false;
+    }
+    public boolean checkRight(int i){
+        return blocks[i].getValue()==blocks[i+1].getValue();
+    }
+    public boolean checkLeft(int i){
+        return blocks[i].getValue()==blocks[i-1].getValue();
+    }
+    public boolean checkUp(int i){
+        return blocks[i].getValue()==blocks[i-4].getValue();
+    }
+    public boolean checkDown(int i){
+        return blocks[i].getValue()==blocks[i+4].getValue();
+    }
+    public void youWin(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("You Win!\nYour Score: "+score+
+                             "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.showAndWait();
+    }
+    public boolean checkWin(){
+        for(Block b : blocks){
+            if(b.getValue()==2048){
+                return true;
+            }
+        }
+        return false;
     }
 }//TwentyFortyEight
