@@ -1,3 +1,4 @@
+
 package cs1302.arcade;
 
 //imports
@@ -22,7 +23,7 @@ import java.lang.Thread;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
-public class TwentyFortyEight extends Application {
+public class TwentyFortyEight extends Stage{
 
     Text gameName;
     Text direction;
@@ -34,9 +35,11 @@ public class TwentyFortyEight extends Application {
     Button newGame;
     public Block[] blocks;
     
-
-    @Override
-    public void start(Stage stage) {
+    public TwentyFortyEight(){
+        super();
+    }
+    
+    public void start() {
         gameName = new Text("2048");
         gameName.setFont(Font.font("clear sans", 50));
         gameName.setFill(Color.BLACK);
@@ -66,11 +69,10 @@ public class TwentyFortyEight extends Application {
         
 
         Scene scene = new Scene(vbox, 450, 680);
-        stage.setTitle("cs1302-arcade!");
-        stage.setScene(scene);
-        stage.sizeToScene();
-        stage.setResizable(false);
-        stage.show();
+        this.setTitle("cs1302-arcade!");
+        this.setScene(scene);
+        this.sizeToScene();
+        this.setResizable(false);
         tilePane.requestFocus();
 
 
@@ -78,22 +80,17 @@ public class TwentyFortyEight extends Application {
 
     private EventHandler<? super KeyEvent> createKeyHandler() {
         return event -> {
-            System.out.println(event);
             if (event.getCode() == KeyCode.LEFT){
                 shiftToLeft();
-                System.out.println("LEFT");
             }
             if (event.getCode() == KeyCode.RIGHT){
                 shiftToRight();
-                System.out.println("RIGHT");
             }
             if (event.getCode() == KeyCode.UP){
                 shiftToUp();
-                System.out.println("UP");
             }
             if (event.getCode() == KeyCode.DOWN){
                 shiftToDown();
-                System.out.println("DOWN");
             }
             // TODO bounds checking
         };
@@ -110,7 +107,6 @@ public class TwentyFortyEight extends Application {
             else if (i < 15 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
         }
         if(possible){
-            System.out.println("Worked Here lol");
             shiftRightHelper(0,2);
             shiftRightHelper(4,6);
             shiftRightHelper(8,10);
@@ -173,7 +169,6 @@ public class TwentyFortyEight extends Application {
             }
         }
         if(possible){
-            System.out.println("Worked Here lol");
             shiftLeftHelper(1,3);
             shiftLeftHelper(5,7);
             shiftLeftHelper(9,11);
@@ -270,14 +265,12 @@ public class TwentyFortyEight extends Application {
         direction.setText("Down");
         boolean possible = false;
         for(int i = 0; i<16; i++){
-            System.out.println(blocks[i].getIsEmpty());
             if(blocks[i].getIsEmpty()){
                 possible = true;
             }
             else if (i < 12 && blocks[i+4].getValue()==blocks[i].getValue()){possible = true;}
         }
         if(possible){
-            System.out.println("Worked Here lol");
             shiftDownHelper(0,8);
             shiftDownHelper(1,9);
             shiftDownHelper(2,10);
@@ -285,7 +278,6 @@ public class TwentyFortyEight extends Application {
             randomPlace();
         }
         for(Block b: blocks){
-            System.out.println(b.getValue());
             b.setIsCombined(false);
         }
         tilePane.getChildren().clear();

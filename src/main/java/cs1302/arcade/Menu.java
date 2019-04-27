@@ -18,10 +18,16 @@ public class Menu extends Application{
     Button frogger;
     Button exit;
     Text text;
+    TwentyFortyEight one;
     @Override
     public void start(Stage stage){
         menu = new VBox();
         twentyFortyEight = new Button("2048");
+        twentyFortyEight.setOnAction((ActionEvent e)->{
+                one = new TwentyFortyEight();
+                one.start();
+                one.show();
+            });
         frogger = new Button("Frogger");
         text = new Text("MobaXterm Penguins\nArcade Games!");
         exit = new Button("Exit");
