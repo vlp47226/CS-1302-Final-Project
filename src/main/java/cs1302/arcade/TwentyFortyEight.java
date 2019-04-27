@@ -1,6 +1,7 @@
 package cs1302.arcade;
 
 //imports
+import javafx.event.ActionEvent;
 import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -48,6 +49,7 @@ public class TwentyFortyEight extends Application {
         hbox = new HBox();
         blocks = new Block[16];
         newGame = new Button("New Game");
+        newGame.setOnAction(this::newGame);
         tilePane = new TilePane();
         tilePane.setPrefColumns(4);
         tilePane.setPrefRows(4);
@@ -118,13 +120,7 @@ public class TwentyFortyEight extends Application {
         for(Block b: blocks){
             b.setIsCombined(false);
         }
-        tilePane = new TilePane();
-        tilePane.setPrefColumns(4);
-        tilePane.setPrefRows(4);
-        tilePane.setPrefTileWidth(100.0);
-        tilePane.setPrefTileHeight(100.0);
-        tilePane.setHgap(5.0);
-        tilePane.setVgap(5.0);
+        tilePane.getChildren().clear();
         for (int i = 0; i < 16; i++) {
             tilePane.getChildren().add(blocks[i]);
         }
@@ -187,13 +183,7 @@ public class TwentyFortyEight extends Application {
         for(Block b: blocks){
             b.setIsCombined(false);
         }
-        tilePane = new TilePane();
-        tilePane.setPrefColumns(4);
-        tilePane.setPrefRows(4);
-        tilePane.setPrefTileWidth(100.0);
-        tilePane.setPrefTileHeight(100.0);
-        tilePane.setHgap(5.0);
-        tilePane.setVgap(5.0);
+        tilePane.getChildren().clear();
         for (int i = 0; i < 16; i++){tilePane.getChildren().add(blocks[i]);}
         vbox.getChildren().set(2,tilePane);
         if(!checkPossible()){
@@ -243,13 +233,7 @@ public class TwentyFortyEight extends Application {
         for(Block b: blocks){
             b.setIsCombined(false);
         }
-        tilePane = new TilePane();
-        tilePane.setPrefColumns(4);
-        tilePane.setPrefRows(4);
-        tilePane.setPrefTileWidth(100.0);
-        tilePane.setPrefTileHeight(100.0);
-        tilePane.setHgap(5.0);
-        tilePane.setVgap(5.0);
+        tilePane.getChildren().clear();
         for (int i = 0; i < 16; i++) {
             tilePane.getChildren().add(blocks[i]);
 
@@ -304,13 +288,7 @@ public class TwentyFortyEight extends Application {
             System.out.println(b.getValue());
             b.setIsCombined(false);
         }
-        tilePane = new TilePane();
-        tilePane.setPrefColumns(4);
-        tilePane.setPrefRows(4);
-        tilePane.setPrefTileWidth(100.0);
-        tilePane.setPrefTileHeight(100.0);
-        tilePane.setHgap(5.0);
-        tilePane.setVgap(5.0);
+        tilePane.getChildren().clear();
         for (int i = 0; i < 16; i++) {
             tilePane.getChildren().add(blocks[i]);
         }
@@ -363,7 +341,7 @@ public class TwentyFortyEight extends Application {
         while(!isPlaced){
             int random = ThreadLocalRandom.current().nextInt(0, 16);
             if(blocks[random].getIsEmpty()){
-                blocks[random] = new Block(1024,false);
+                blocks[random] = new Block(2,false);
                 isPlaced = true;
             }
         }
@@ -378,20 +356,21 @@ public class TwentyFortyEight extends Application {
     public boolean checkPossible(){
         for(int i = 0; i < 16; i++){
             if(i >= 0 && i < 3){
-                if(checkRight(i)||checkDown(i)||blocks[i]==null){return true;}
+                if(checkRight(i)||checkDown(i)||blocks[i].getValue()==0){return true;}
             }
-            else if(i==3){if(checkDown(i)){return true;}}
+            else if(i==3){if(checkDown(i)||blocks[i].getValue()==0){return true;}}
             else if(i >= 4 && i < 7){
-                if(checkRight(i)||checkDown(i)||blocks[i]==null){return true;}
+                if(checkRight(i)||checkDown(i)||blocks[i].getValue()==0){return true;}
             }
-            else if(i==7){if(checkDown(i)){return true;}}
+            else if(i==7){if(checkDown(i)||blocks[i].getValue()==0){return true;}}
             else if(i >= 8 && i < 11){
-                if(checkRight(i)||checkDown(i)||blocks[i]==null){return true;}
+                if(checkRight(i)||checkDown(i)||blocks[i].getValue()==0){return true;}
             }
-            else if(i==11){if(checkDown(i)){return true;}}
+            else if(i==11){if(checkDown(i)||blocks[i].getValue()==0){return true;}}
             else if(i >= 12 && i < 15){
-                if(checkRight(i)||blocks[i]==null){return true;}
+                if(checkRight(i)||blocks[i].getValue()==0){return true;}
             }
+            else if(i==15){if(blocks[i].getValue()==0){return true;}}
         }
         return false;
     }
@@ -420,5 +399,14 @@ public class TwentyFortyEight extends Application {
             }
         }
         return false;
+    }
+
+    public void newGame(ActionEvent e){
+        score = 0;
+        label = new Label("Score\n" + score);
+        hbox.getChildren().set(1, label);
+        tilePane.getChildren().clear();
+        testAddBlocks();
+        vbox.getChildren().set(2, tilePane);
     }
 }//TwentyFortyEight
