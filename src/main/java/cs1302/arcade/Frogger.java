@@ -31,8 +31,13 @@ public class Frogger extends Stage{
     Group frogger;
     Group frog;
     LeftLane l;
+    LeftLane l2;
+    LeftLane l3;
+    LeftLane l4;
     ImageView frogBoy;
     Rectangle r;
+    public int lives;
+    Text lifeCounter;
     public Frogger(){
         super();
     }
@@ -43,22 +48,34 @@ public class Frogger extends Stage{
          * (rectangle) in a group.
          */
         frogger = new Group();
-        l = new LeftLane();
+        VBox v = new VBox();
+        lives = 3;
+        lifeCounter = new Text("Lives: " + lives);
+        
         frog = new Group();
         Image frogg = new Image("file:src/main/resources/frog.png",50.0,50.0,true,true);
         frogBoy = new ImageView(frogg);
-        frogBoy.setX(640);
-        frogBoy.setY(670);                                
+        frogBoy.setX(325);
+        frogBoy.setY(640);
+        l = new LeftLane(0,((int)frogBoy.getY())-50);
+        l2 = new LeftLane(0,((int)frogBoy.getY())-100);
+        l3 = new LeftLane(0,((int)frogBoy.getY())-150);
+        l4 = new LeftLane(0,((int)frogBoy.getY())-200);
         frog.getChildren().add(frogBoy);
         frog.setOnKeyPressed(createKeyHandler());
-        r = new Rectangle(1280.0,620.0);
+        r = new Rectangle(650.0,700.0);
         r.setX(0);
-        r.setY(100);
+        r.setY(0);
         r.setFill(Color.GREEN);
-        frogger.getChildren().addAll(frog, l, r);
+        frogger.getChildren().addAll(frog, l,l2,l3,l4, r);
+        v.getChildren().addAll(lifeCounter,frogger);
+        l.toFront();
+        l2.toFront();
+        l3.toFront();
+        l4.toFront();
         frog.toFront();
         
-        Scene scene = new Scene(frogger, 1280, 720);
+        Scene scene = new Scene(v, 650, 720);
         this.setTitle("Frogger");
         this.setScene(scene);
         this.sizeToScene();
@@ -68,34 +85,56 @@ public class Frogger extends Stage{
         return event -> {
             System.out.println(event);
             if (event.getCode() == KeyCode.LEFT){
-                frogBoy.setX(frogBoy.getX() - 50.0);
-                if(frogBoy.intersects(l.getCar().getBoundsInLocal())){
-                    frogBoy.setX(640);
-                    frogBoy.setY(670);
+                if(!(frogBoy.getX()-50.0<=0.0)){
+                    frogBoy.setX(frogBoy.getX() - 50.0);
+                    reset();
                 }
             }
             if (event.getCode() == KeyCode.RIGHT){
-                frogBoy.setX(frogBoy.getX() + 50.0);
-                if(frogBoy.intersects(l.getCar().getBoundsInLocal())){
-                    frogBoy.setX(640);
-                    frogBoy.setY(670);
+                if(!(frogBoy.getX()+50.0>=600.0)){
+                    frogBoy.setX(frogBoy.getX() + 50.0);
+                    reset();
                 }
             }
             if (event.getCode() == KeyCode.UP){
-                frogBoy.setY(frogBoy.getY() - 50.0);
-                if(frogBoy.intersects(l.getCar().getBoundsInLocal())){
-                    frogBoy.setX(640);
-                    frogBoy.setY(670);
+                if(!(frogBoy.getY()-50.0<=0.0)){
+                    frogBoy.setY(frogBoy.getY() - 50.0);
+                    reset();
                 }
             }
             if (event.getCode() == KeyCode.DOWN){
-                frogBoy.setY(frogBoy.getY() + 50.0);
-                if(frogBoy.intersects(l.getCar().getBoundsInLocal())){
-                    frogBoy.setX(640);
-                    frogBoy.setY(670);
+                if(!(frogBoy.getY()+50.0>=670.0)){
+                    frogBoy.setY(frogBoy.getY() + 50.0);
+                    reset();
                 }
             }
             // TODO bounds checking
         };
     } // createKeyHandler
+    public void reset(){
+        if(frogBoy.intersects(l.getCar().getBoundsInLocal())){
+            frogBoy.setX(325);
+            frogBoy.setY(640);
+            lives -=1;
+            lifeCounter.setText("Lives: " + lives);
+        }
+        if(frogBoy.intersects(l2.getCar().getBoundsInLocal())){
+            frogBoy.setX(325);
+            frogBoy.setY(640);
+            lives -=1;
+            lifeCounter.setText("Lives: " + lives);
+        }
+        if(frogBoy.intersects(l3.getCar().getBoundsInLocal())){
+            frogBoy.setX(325);
+            frogBoy.setY(640);
+            lives -=1;
+            lifeCounter.setText("Lives: " + lives);
+        }
+        if(frogBoy.intersects(l4.getCar().getBoundsInLocal())){
+            frogBoy.setX(325);
+            frogBoy.setY(640);
+            lives -=1;
+            lifeCounter.setText("Lives: " + lives);
+        }
+    }
 }

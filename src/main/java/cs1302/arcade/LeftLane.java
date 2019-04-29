@@ -8,15 +8,15 @@ public class LeftLane extends Group{
     Rectangle r;
     Car c;
     Color special;
-    public LeftLane(){
+    public LeftLane(int x, int y){
         super();
         special = new Color(0.3451,0.3451,0.3451,1);
-        r = new Rectangle(1280.0,100.0);
-        r.setX(0);
-        r.setY(0);
+        r = new Rectangle(1280.0,50.0);
+        r.setX(x);
+        r.setY(y);
         c = new Car();
-        c.setX(0);
-        c.setY(0);
+        c.setX(r.getX());
+        c.setY(r.getY());
         r.setFill(special);
         this.getChildren().addAll(r,c);
     }

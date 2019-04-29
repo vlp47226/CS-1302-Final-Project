@@ -81,16 +81,32 @@ public class TwentyFortyEight extends Stage{
     private EventHandler<? super KeyEvent> createKeyHandler() {
         return event -> {
             if (event.getCode() == KeyCode.LEFT){
-                shiftToLeft();
+                Thread t = new Thread(()->{
+                        Platform.runLater(()->{shiftToLeft();});
+                });
+                t.setDaemon(true);
+                t.start();
             }
             if (event.getCode() == KeyCode.RIGHT){
-                shiftToRight();
+                Thread t = new Thread(()->{
+                        Platform.runLater(()->{shiftToRight();});
+                });
+                t.setDaemon(true);
+                t.start();
             }
             if (event.getCode() == KeyCode.UP){
-                shiftToUp();
+                Thread t = new Thread(()->{
+                        Platform.runLater(()->{shiftToUp();});
+                });
+                t.setDaemon(true);
+                t.start();
             }
             if (event.getCode() == KeyCode.DOWN){
-                shiftToDown();
+                Thread t = new Thread(()->{
+                        Platform.runLater(()->{shiftToDown();});
+                });
+                t.setDaemon(true);
+                t.start();
             }
             // TODO bounds checking
         };

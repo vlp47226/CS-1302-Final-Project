@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 
 public class Menu extends Application{
     VBox menu;
