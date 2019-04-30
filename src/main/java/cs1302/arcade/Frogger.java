@@ -57,24 +57,23 @@ public class Frogger extends Stage{
         frogBoy = new ImageView(frogg);
         frogBoy.setX(325);
         frogBoy.setY(640);
+        r = new Rectangle(650.0, 430.0);
+        r.setX(0);
+        r.setY(0);
+        r.setFill(Color.GREEN);
         l = new LeftLane(0,((int)frogBoy.getY())-50);
         l2 = new LeftLane(0,((int)frogBoy.getY())-100);
         l3 = new LeftLane(0,((int)frogBoy.getY())-150);
         l4 = new LeftLane(0,((int)frogBoy.getY())-200);
         frog.getChildren().add(frogBoy);
         frog.setOnKeyPressed(createKeyHandler());
-        r = new Rectangle(650.0,700.0);
-        r.setX(0);
-        r.setY(0);
-        r.setFill(Color.GREEN);
-        frogger.getChildren().addAll(frog, l,l2,l3,l4, r);
+        frogger.getChildren().addAll(frog, l,l2,l3,l4,r);
         v.getChildren().addAll(lifeCounter,frogger);
-        l.toFront();
-        l2.toFront();
-        l3.toFront();
-        l4.toFront();
+        l.move();
+        l2.move();
+        l3.move();
+        l4.move();
         frog.toFront();
-        
         Scene scene = new Scene(v, 650, 720);
         this.setTitle("Frogger");
         this.setScene(scene);
@@ -87,54 +86,62 @@ public class Frogger extends Stage{
             if (event.getCode() == KeyCode.LEFT){
                 if(!(frogBoy.getX()-50.0<=0.0)){
                     frogBoy.setX(frogBoy.getX() - 50.0);
-                    reset();
                 }
             }
             if (event.getCode() == KeyCode.RIGHT){
                 if(!(frogBoy.getX()+50.0>=600.0)){
                     frogBoy.setX(frogBoy.getX() + 50.0);
-                    reset();
                 }
             }
             if (event.getCode() == KeyCode.UP){
                 if(!(frogBoy.getY()-50.0<=0.0)){
                     frogBoy.setY(frogBoy.getY() - 50.0);
-                    reset();
                 }
             }
             if (event.getCode() == KeyCode.DOWN){
                 if(!(frogBoy.getY()+50.0>=670.0)){
                     frogBoy.setY(frogBoy.getY() + 50.0);
-                    reset();
                 }
             }
-            // TODO bounds checking
+            reset();// TODO bounds checking
         };
     } // createKeyHandler
     public void reset(){
-        if(frogBoy.intersects(l.getCar().getBoundsInLocal())){
-            frogBoy.setX(325);
-            frogBoy.setY(640);
-            lives -=1;
-            lifeCounter.setText("Lives: " + lives);
+        for(Car c : l.getCar()){
+            if(frogBoy.intersects(c.getBoundsInLocal())){
+                frogBoy.setX(325);
+                frogBoy.setY(640);
+                lives -=1;
+                lifeCounter.setText("Lives: " + lives);
+            }
         }
-        if(frogBoy.intersects(l2.getCar().getBoundsInLocal())){
-            frogBoy.setX(325);
-            frogBoy.setY(640);
-            lives -=1;
-            lifeCounter.setText("Lives: " + lives);
+        for(Car c : l2.getCar()){
+            if(frogBoy.intersects(c.getBoundsInLocal())){
+                frogBoy.setX(325);
+                frogBoy.setY(640);
+                lives -=1;
+                lifeCounter.setText("Lives: " + lives);
+            }
         }
-        if(frogBoy.intersects(l3.getCar().getBoundsInLocal())){
-            frogBoy.setX(325);
-            frogBoy.setY(640);
-            lives -=1;
-            lifeCounter.setText("Lives: " + lives);
+        for(Car c : l3.getCar()){
+            if(frogBoy.intersects(c.getBoundsInLocal())){
+                frogBoy.setX(325);
+                frogBoy.setY(640);
+                lives -=1;
+                lifeCounter.setText("Lives: " + lives);
+            }
         }
-        if(frogBoy.intersects(l4.getCar().getBoundsInLocal())){
-            frogBoy.setX(325);
-            frogBoy.setY(640);
-            lives -=1;
-            lifeCounter.setText("Lives: " + lives);
+        for(Car c : l4.getCar()){
+            if(frogBoy.intersects(c.getBoundsInLocal())){
+                frogBoy.setX(325);
+                frogBoy.setY(640);
+                lives -=1;
+                lifeCounter.setText("Lives: " + lives);
+            }
         }
+        
+    }
+    public ImageView getFrogBoy(){
+        return frogBoy;
     }
 }
