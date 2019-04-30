@@ -32,3 +32,11 @@ Here is a sample entry (delete this line; also: feel free to copy/paste/modify):
 2. **TODO:** Get the game working perfectly, with score and entering, exiting, and tutorial working. Then start coding our next game, which we will decide.
 
 3. **PROB:** It is hard to schedule around events and classes, but we are working on it.
+
+## TUE 2019-04-30 @ 11:55 PM EST
+
+1. **DONE:** We finished a functional 2048, Started on frogger, got the images for frogger, made the game show up with a movable frog and moving cars. 
+
+2. **TODO:** Get collision to work, get logs to work, add levels, and code the endgame.
+
+3. **PROB:** Coding is hard.
