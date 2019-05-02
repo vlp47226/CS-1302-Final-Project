@@ -10,11 +10,11 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 
-public class LeftLane extends Group{
+public class RightLane extends Group{
     Rectangle r;
     Car[] cars;
     Color special;
-    public LeftLane(int x, int y,int carX){
+    public RightLane(int x, int y,int carX){
         super();
         special = new Color(0.3451,0.3451,0.3451,1);
         r = new Rectangle(1280.0,50.0);
@@ -26,12 +26,12 @@ public class LeftLane extends Group{
         }
         cars[0].setX(carX);
         cars[0].setY(y);
-        cars[1].setX(carX-200);
+        cars[1].setX(carX+200);
         cars[1].setY(y);
-        cars[2].setX(carX-400);
+        cars[2].setX(carX+400);
         cars[2].setY(y);
         for(Car c: cars){
-            if(c.getX()<0){c.setVisible(false);}
+            if(c.getX()>650){c.setVisible(false);}
         }
         r.setFill(special);
         this.getChildren().addAll(r,cars[0],cars[1],cars[2]);
