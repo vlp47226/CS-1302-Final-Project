@@ -46,6 +46,8 @@ public class Frogger extends Stage{
     Text levelCounter;
     Text lifeCounter;
     HBox textHolder;
+    public int score;
+    Text scoreCounter;
     public Frogger(){
         super();
     }
@@ -55,8 +57,10 @@ public class Frogger extends Stage{
         VBox v = new VBox();
         lives = 3;
         level = 1;
+        score = 150;
         lifeCounter = new Text("Lives: " + lives);
         levelCounter = new Text("Level: " + level);
+        scoreCounter = new Text("Score: " + score);
         frog = new Group();
         Image frogg = new Image("file:src/main/resources/frog.png",50.0,50.0,true,true);
         frogBoy = new ImageView(frogg);
@@ -76,19 +80,29 @@ public class Frogger extends Stage{
         frog.getChildren().add(frogBoy);
         frog.setOnKeyPressed(createKeyHandler());
         frogger.getChildren().addAll(frog,l ,l2 ,l3 ,l4 ,r, river, river2, river3);
-        textHolder.getChildren().addAll(lifeCounter, levelCounter);
+        textHolder.getChildren().addAll(lifeCounter,scoreCounter, levelCounter);
         v.getChildren().addAll(textHolder,frogger);
         river.toFront();
-        moveLeft(l);
-        moveRight(l2);
-        moveLeft(l3);
-        moveRight(l4);
+        Thread t = new Thread(()->{
+                Platform.runLater(()->{
+                        moveLeft(l);
+                        moveRight(l2);
+                        moveLeft(l3);
+                        moveRight(l4);
+                        moveLogLeft(river);
+                        moveLogRight(river2);
+                        moveLogLeft(river3);
+                    });
+        });
+        t.setDaemon(true);
+        t.start();
         frog.toFront();
         Scene scene = new Scene(v, 650, 720);
         this.setTitle("Frogger");
         this.setScene(scene);
         this.sizeToScene();
         frog.requestFocus();
+        
     }
     private EventHandler<? super KeyEvent> createKeyHandler() {
         return event -> {
@@ -120,55 +134,56 @@ public class Frogger extends Stage{
     public void reset(){
         for(Car c : l.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
-                frogBoy.setX(325);
-                frogBoy.setY(640);
-                lives -=1;
-                lifeCounter.setText("Lives: " + lives);
+                resetFrog();
             }
         }
         for(Car c : l2.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
-                frogBoy.setX(325);
-                frogBoy.setY(640);
-                lives -=1;
-                lifeCounter.setText("Lives: " + lives);
+                resetFrog();
             }
         }
         for(Car c : l3.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
-                frogBoy.setX(325);
-                frogBoy.setY(640);
-                lives -=1;
-                lifeCounter.setText("Lives: " + lives);
+                resetFrog();
             }
         }
         for(Car c : l4.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
-                frogBoy.setX(325);
-                frogBoy.setY(640);
-                lives -=1;
-                lifeCounter.setText("Lives: " + lives);
+                resetFrog();
             }
         }
         
     }
     public void nextLevel(){
         if(frogBoy.getY()-50.0 <= 0){
-            frogBoy.setX(325);
-            frogBoy.setY(640);
-            level += 1;
-            levelCounter.setText("Level: " + level);
-            moveLeft(l);
-            moveRight(l2);
-            moveLeft(l3);
-            moveRight(l4);
+            if(level+1 == 4){youWin();}
+            else{
+                frogBoy.setX(325);
+                frogBoy.setY(640);
+                score += 100;
+                scoreCounter.setText("Score: " + score);
+                level += 1;
+                levelCounter.setText("Level: " + level);
+                moveLeft(l);
+                moveRight(l2);
+                moveLeft(l3);
+                moveRight(l4);
+                moveLogLeft(river);
+                moveLogRight(river2);
+                moveLogLeft(river3);
+            }
         }
     }
-    public void resetImageView(ImageView v){
-        v.setX(325);
-        v.setY(640);
+    public void resetFrog(){
+        frogBoy.setX(325);
+        frogBoy.setY(640);
         lives -=1;
         lifeCounter.setText("Lives: " + lives);
+        score -= 50;
+        scoreCounter.setText("Score: " + score);
+        if(lives == 0){
+            youLoseXD();
+        }
     }
     public ImageView getFrogBoy(){
         return frogBoy;
@@ -184,10 +199,7 @@ public class Frogger extends Stage{
                     c.setVisible(false);
                 }
                 if(c.intersects(frogBoy.getBoundsInLocal())){
-                    frogBoy.setX(325);
-                    frogBoy.setY(640);
-                    lives -=1;
-                    lifeCounter.setText("Lives: " + lives);
+                    resetFrog();
                 }
             }
         };
@@ -213,10 +225,7 @@ public class Frogger extends Stage{
                     c.setVisible(false);
                 }
                 if(c.intersects(frogBoy.getBoundsInLocal())){
-                    frogBoy.setX(325);
-                    frogBoy.setY(640);
-                    lives -=1;
-                    lifeCounter.setText("Lives: " + lives);
+                    resetFrog();
                 }
             }
         };
@@ -231,5 +240,85 @@ public class Frogger extends Stage{
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
+    }
+    public void moveLogLeft(River left){
+        EventHandler<ActionEvent> handler = event ->{
+            for(Log l : left.getLogs()){
+                if(l.getX()+1>=0&&(!l.isVisible())){l.setVisible(true);}
+                l.setX(l.getX()+1);
+                if(l.getX()==650){
+                    l.setX(r.getX()-50);
+                    l.setVisible(false);
+                }
+                if(l.intersects(frogBoy.getBoundsInLocal())){
+                    frogBoy.setX(frogBoy.getX()+1);
+                }
+            }
+            int numOfLogsIntersect = 0;
+            for(Log l : left.getLogs()){
+                if(l.intersects(frogBoy.getBoundsInLocal())){
+                    numOfLogsIntersect++;
+                }
+            }
+            if(numOfLogsIntersect == 0 && frogBoy.getY() == left.getY()){
+                resetFrog();
+            }
+        };
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000/60), handler);
+        if(level == 2){
+            keyFrame = new KeyFrame(Duration.millis(1000/90), handler);
+        }
+        if(level == 3){
+            keyFrame = new KeyFrame(Duration.millis(1000/120), handler);
+        }
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
+    }
+    public void moveLogRight(River right){
+        EventHandler<ActionEvent> handler = event ->{
+            for(Log l : right.getLogs()){
+                if(l.getX()-1<550&&(!l.isVisible())){l.setVisible(true);}
+                l.setX(l.getX()-1);
+                if(l.getX()== 0){
+                    l.setX(650+50);
+                    l.setVisible(false);
+                }
+                if(l.intersects(frogBoy.getBoundsInLocal())){
+                    frogBoy.setX(frogBoy.getX()-1);
+                }
+            }
+            int numOfLogsIntersect = 0;
+            for(Log l : right.getLogs()){
+                if(l.intersects(frogBoy.getBoundsInLocal())){
+                    numOfLogsIntersect++;
+                }
+            }
+            if(numOfLogsIntersect == 0 && frogBoy.getY() == right.getY()){
+                resetFrog();
+            }
+        };
+        KeyFrame keyFrame = new KeyFrame(Duration.millis(1000/(60+(30*(level-1)))), handler);
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(keyFrame);
+        timeline.play();
+    }
+
+    public void youWin(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("You Win!\nYour Score: "+score+
+                             "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.showAndWait();
+        start();
+    }
+
+    public void youLoseXD(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("You Lose!\nYour Score: "+score+
+                             "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.showAndWait();
+        start();
     }
 }

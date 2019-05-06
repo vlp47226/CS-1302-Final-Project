@@ -47,7 +47,9 @@ public class River extends Group {
     }
 
     
-
+    public double getY(){
+        return r.getY();
+    }
 
 
 
