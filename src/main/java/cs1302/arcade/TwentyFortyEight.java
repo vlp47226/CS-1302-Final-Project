@@ -23,8 +23,13 @@ import java.lang.Thread;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
+/**
+ *This class represents a game of 2048. It extends stage so it can show up
+ *seperately from the {@code Menu}.
+ */
 public class TwentyFortyEight extends Stage{
 
+    //Instance variables
     Text gameName;
     Text direction;
     Label label;
@@ -34,11 +39,18 @@ public class TwentyFortyEight extends Stage{
     TilePane tilePane;
     Button newGame;
     public Block[] blocks;
-    
+
+    /**
+     *This constructor is a basic constructor which calls super.
+     */
     public TwentyFortyEight(){
         super();
     }
-    
+
+    /**
+     *This method starts the game of 2048. It sets all of the instance variables, scores,
+     *placements, and the tilepane.
+     */
     public void start() {
         gameName = new Text("2048");
         gameName.setFont(Font.font("clear sans", 50));
@@ -63,13 +75,10 @@ public class TwentyFortyEight extends Stage{
         testAddBlocks();
         hbox.setSpacing(200.0);
         hbox.getChildren().addAll(gameName, label);
-        vbox.setOnKeyPressed(createKeyHandler()); // left-right key presses move the rectangle
-        
+        vbox.setOnKeyPressed(createKeyHandler());
         vbox.getChildren().addAll(hbox,newGame, tilePane, direction);
-        
-
         Scene scene = new Scene(vbox, 450, 680);
-        this.setTitle("cs1302-arcade!");
+        this.setTitle("2048");
         this.setScene(scene);
         this.sizeToScene();
         this.setResizable(false);
@@ -78,6 +87,11 @@ public class TwentyFortyEight extends Stage{
 
     }//start
 
+    /**
+     *This method holdes the events for the KeyHandler for the game.
+     *
+     *@return the EventHandler for the keys.
+     */
     private EventHandler<? super KeyEvent> createKeyHandler() {
         return event -> {
             if (event.getCode() == KeyCode.LEFT){
@@ -111,7 +125,10 @@ public class TwentyFortyEight extends Stage{
             // TODO bounds checking
         };
     } // createKeyHandler
-    
+
+    /**
+     *This method shifts the blocks to the right when right is pushed
+     */
     public void shiftToRight(){
         direction.setText("Right");
         boolean possible = false;
@@ -145,6 +162,13 @@ public class TwentyFortyEight extends Stage{
         }
 
     }
+
+    /**
+     *This method shifts the blocks right by specified indices.
+     *
+     *@param indexOne the smaller of the two indices
+     *@param indexTwo the larger of the two indices
+     */
     public void shiftRightHelper(int indexOne, int indexTwo){
         for(int i = indexTwo; i >= indexOne; i--){
             for (int j = i+1; j <= indexTwo+1; j++) {
@@ -164,6 +188,9 @@ public class TwentyFortyEight extends Stage{
         }
     }
 
+    /**
+     *This method shifts the blocks to the left when left is pushed
+     */
     public void shiftToLeft(){
         direction.setText("Left");
         boolean possible = false;
@@ -206,6 +233,12 @@ public class TwentyFortyEight extends Stage{
         
     }
 
+    /**
+     *This method shifts the blocks left by specified indices.
+     *
+     *@param indexOne the smaller of the two indices
+     *@param indexTwo the larger of the two indices
+     */
     public void shiftLeftHelper(int indexOne, int indexTwo){
         for(int i = indexOne; i <= indexTwo; i++){
             for(int j = i-1; j >= indexOne-1; j--) {
@@ -224,7 +257,10 @@ public class TwentyFortyEight extends Stage{
             }
         }
     }
-    
+
+    /**
+     *This method shifts the blocks up when up is pushed
+     */
     public void shiftToUp(){
         direction.setText("Up");
         boolean possible = false;
@@ -258,6 +294,12 @@ public class TwentyFortyEight extends Stage{
         }
     }
 
+    /**
+     *This method shifts the blocks up by specified indices.
+     *
+     *@param indexOne the smaller of the two indices
+     *@param indexTwo the larger of the two indices
+     */
     public void shiftUpHelper(int indexOne, int indexTwo){
         for(int i = indexOne; i <= indexTwo; i=i+4){
             for (int j = i-4; j >= indexOne-4; j=j-4) {
@@ -277,6 +319,9 @@ public class TwentyFortyEight extends Stage{
         }
     }
 
+    /**
+     *This method shifts the blocks down when down is pushed
+     */
     public void shiftToDown(){
         direction.setText("Down");
         boolean possible = false;
@@ -309,6 +354,12 @@ public class TwentyFortyEight extends Stage{
         }
     }
 
+    /**
+     *This method shifts the blocks down by specified indices.
+     *
+     *@param indexOne the smaller of the two indices
+     *@param indexTwo the larger of the two indices
+     */
     public void shiftDownHelper(int indexOne, int indexTwo){
         for(int i = indexTwo; i >= indexOne; i = i-4){
             for (int j = i+4; j <= indexTwo+4; j = j+4) {
@@ -328,11 +379,20 @@ public class TwentyFortyEight extends Stage{
         }
     }
 
+    /**
+     *This method adds to the Score by some integer.
+     *
+     *@param x the integer to add
+     */
     public void addToScore(int x){
         score += x;
         label = new Label("Score\n" + score);
         hbox.getChildren().set(1, label);
     }
+
+    /**
+     *This method sets the blocks for the beginning of the game
+     */
     public void testAddBlocks(){
         blocks = new Block[16];
         for(int i = 0; i < 16; i++){
@@ -344,6 +404,10 @@ public class TwentyFortyEight extends Stage{
             tilePane.getChildren().add(b);
         }
     }
+
+    /**
+     *This method randomly places a two or four
+     */
     public void randomPlace(){
         boolean isPlaced = false;
         while(!isPlaced){
@@ -355,12 +419,22 @@ public class TwentyFortyEight extends Stage{
         }
     }
 
+    /**
+     *This method alerts the user of their loss
+     */
     public void youLoseXD(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("You Lose!\nYour Score: "+score+
                              "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
     }
+
+    /**
+     *This method checks the possibility of the game.
+     *
+     *@return the boolean of it the game is possible
+     */
     public boolean checkPossible(){
         for(int i = 0; i < 16; i++){
             if(i >= 0 && i < 3){
@@ -382,24 +456,58 @@ public class TwentyFortyEight extends Stage{
         }
         return false;
     }
+
+    /**
+     *This method checks the right of the block of the given index.
+     *
+     *@return the boolean of the check
+     */
     public boolean checkRight(int i){
         return blocks[i].getValue()==blocks[i+1].getValue();
     }
+
+    /**
+     *This method checks the left of the block of the given index.
+     *
+     *@return the boolean of the check
+     */
     public boolean checkLeft(int i){
         return blocks[i].getValue()==blocks[i-1].getValue();
     }
+
+    /**
+     *This method checks the up of the block of the given index.
+     *
+     *@return the boolean of the check
+     */
     public boolean checkUp(int i){
         return blocks[i].getValue()==blocks[i-4].getValue();
     }
+
+    /**
+     *This method checks the down of the block of the given index.
+     *
+     *@return the boolean of the check
+     */
     public boolean checkDown(int i){
         return blocks[i].getValue()==blocks[i+4].getValue();
     }
+
+    /**
+     *This method alerts the user of their win
+     */
     public void youWin(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("You Win!\nYour Score: "+score+
                              "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
     }
+    /**
+     *This method checks the game for a 2048, so the user can win
+     *
+     *@return the boolean of it they won
+     */
     public boolean checkWin(){
         for(Block b : blocks){
             if(b.getValue()==2048){
@@ -409,6 +517,11 @@ public class TwentyFortyEight extends Stage{
         return false;
     }
 
+    /**
+     *This method sets up a new game when the button is pushed.
+     *
+     *@param e the Action Event to help the method call.
+     */
     public void newGame(ActionEvent e){
         score = 0;
         label = new Label("Score\n" + score);

@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 
 public class Menu extends Application{
     VBox menu;
@@ -32,6 +33,7 @@ public class Menu extends Application{
             });
         frogger = new Button("Frogger");
         frogger.setOnAction((ActionEvent e)->{
+                showDirections();
                 two = new Frogger();
                 two.start();
                 two.show();
@@ -45,5 +47,14 @@ public class Menu extends Application{
         stage.setScene(scene);
         stage.sizeToScene();
         stage.show();
+    }
+    public void showDirections(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Frogger:\nWelcome to Frogger!\nTo Play, use the arrow keys."
+                             +"\nYou start with 150 points. Every level gives you 100 points."
+                             + "Get as close to 450 as you can! Don't get hit by cars, you'll lose"
+                             + "50 points!");
+        alert.getDialogPane().setPrefSize(400,400);
+        alert.showAndWait();
     }
 }

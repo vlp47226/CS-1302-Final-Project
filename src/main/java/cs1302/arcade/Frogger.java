@@ -48,10 +48,13 @@ public class Frogger extends Stage{
     HBox textHolder;
     public int score;
     Text scoreCounter;
+    Timeline timeline;
+    
     public Frogger(){
         super();
     }
     public void start(){
+        timeline = new Timeline();
         textHolder = new HBox();
         frogger = new Group();
         VBox v = new VBox();
@@ -101,6 +104,7 @@ public class Frogger extends Stage{
         this.setTitle("Frogger");
         this.setScene(scene);
         this.sizeToScene();
+        this.setResizable(false);
         frog.requestFocus();
         
     }
@@ -135,21 +139,33 @@ public class Frogger extends Stage{
         for(Car c : l.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
+                if(lives == 0){
+                    youLoseXD();
+                }
             }
         }
         for(Car c : l2.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
+                if(lives == 0){
+                    youLoseXD();
+                }
             }
         }
         for(Car c : l3.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
+                if(lives == 0){
+                    youLoseXD();
+                }
             }
         }
         for(Car c : l4.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
+                if(lives == 0){
+                    youLoseXD();
+                }
             }
         }
         
@@ -210,7 +226,6 @@ public class Frogger extends Stage{
         if(level == 3){
             keyFrame = new KeyFrame(Duration.millis(1000/120), handler);
         }
-        Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
@@ -236,7 +251,6 @@ public class Frogger extends Stage{
         if(level == 3){
             keyFrame = new KeyFrame(Duration.millis(1000/120), handler);
         }
-        Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
@@ -271,7 +285,6 @@ public class Frogger extends Stage{
         if(level == 3){
             keyFrame = new KeyFrame(Duration.millis(1000/120), handler);
         }
-        Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
@@ -300,24 +313,29 @@ public class Frogger extends Stage{
             }
         };
         KeyFrame keyFrame = new KeyFrame(Duration.millis(1000/(60+(30*(level-1)))), handler);
-        Timeline timeline = new Timeline();
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
 
     public void youWin(){
+        timeline.stop();
+        timeline.getKeyFrames().clear();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("You Win!\nYour Score: "+score+
                              "\nPress New Game for a new Game, Exit the game to go back to menu.");
+        alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
         start();
     }
 
     public void youLoseXD(){
+        timeline.stop();
+        timeline.getKeyFrames().clear();
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("You Lose!\nYour Score: "+score+
-                             "\nPress New Game for a new Game, Exit the game to go back to menu.");
+                             "\nPress Ok for a new Game, Exit the game to go back to menu.");
+        alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
         start();
     }

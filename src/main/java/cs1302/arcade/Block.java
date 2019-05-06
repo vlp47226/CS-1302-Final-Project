@@ -47,30 +47,63 @@ public class Block extends VBox{
         this.getChildren().add(iv);
     }
 
+    /**
+     *This method sets the block as empty or not.
+     *
+     *@param isEmpty the to be set boolean
+     */
     public void setIsEmpty(boolean isEmpty){
         this.isEmpty = isEmpty;
     }
-    
+
+    /**
+     *This method gets the value of the emptiness of the block
+     *
+     *@return if the block is empty
+     */
     public boolean getIsEmpty(){
         return isEmpty;
     }
 
+    /**
+     *This method sets the value of the block
+     *
+     *@param a the int to set
+     */
     public void setValue(int a){
         valueInside = a;
     }
 
+    /**
+     *This method gets the value of the block
+     *
+     *@return the value
+     */
     public int getValue(){
         return valueInside;
     }
 
+    /**
+     *This method gets if the block is combined
+     *
+     *@return if the block is combined
+     */
     public boolean isCombinedBlock(){
         return isCombined;
     }
 
+    /**
+     *This method sets if the block is combined
+     *
+     *@param combined the boolean to set
+     */
     public void setIsCombined(boolean combined){
         isCombined = combined;
     }
-    
+
+    /**
+     *This method sets the images of the block.
+     */
     public void setImageArray(){
         i = new Image[11];
         i[0] = new Image("file:src/main/resources/2.png");
