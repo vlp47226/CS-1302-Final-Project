@@ -33,6 +33,8 @@ public class Frogger extends Stage{
     Group frogger;
     Group frog;
     River river;
+    River river2;
+    River river3;
     LeftLane l;
     RightLane l2;
     LeftLane l3;
@@ -68,12 +70,15 @@ public class Frogger extends Stage{
         l2 = new RightLane(0,((int)frogBoy.getY())-100, 650);
         l3 = new LeftLane(0,((int)frogBoy.getY())-150, 0);
         l4 = new RightLane(0,((int)frogBoy.getY())-200, 650);
-        river = new River(0, ((int) frogBoy.getY())-300, 0);
+        river = new River(0, ((int) frogBoy.getY())-300, 100);
+        river2 = new River(0, ((int) frogBoy.getY())-350,100);
+        river3 = new River(0, ((int) frogBoy.getY())-400,100);
         frog.getChildren().add(frogBoy);
         frog.setOnKeyPressed(createKeyHandler());
-        frogger.getChildren().addAll(frog,l ,l2 ,l3 ,l4 ,r, river);
+        frogger.getChildren().addAll(frog,l ,l2 ,l3 ,l4 ,r, river, river2, river3);
         textHolder.getChildren().addAll(lifeCounter, levelCounter);
         v.getChildren().addAll(textHolder,frogger);
+        river.toFront();
         moveLeft(l);
         moveRight(l2);
         moveLeft(l3);
