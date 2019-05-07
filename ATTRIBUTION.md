@@ -3,8 +3,19 @@
 Proper attribution should be given for all assets (e.g., art, sound, music, etc.) that is not
 authored by members of your project team.
 
-## Alien
-* `src/main/resources/alien.png`
-* Carlos Alface. "Alien" November 15, 2014
-* https://opengameart.org/content/alien-1
-* Creative Commons Attribution 3.0 Unported (CC BY 3.0)
+## 2048
+    src/main/resources/2.png
+    src/main/resources/4.png
+    src/main/resources/8.png
+    src/main/resources/16.png
+    src/main/resources/32.png
+    src/main/resources/64.png
+    src/main/resources/128.png
+    src/main/resources/256.png
+    src/main/resources/512.png
+    src/main/resources/1024.png
+    src/main/resources/2048.png
+
+    nazywam. "2048 Tiles" November 15, 2014 
+    https://opengameart.org/content/2048-tiles
+    CC0 1.0 Universal (CC0 1.0)Public Domain Dedication
