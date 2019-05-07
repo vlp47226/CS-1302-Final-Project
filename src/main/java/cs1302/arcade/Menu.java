@@ -33,7 +33,7 @@ public class Menu extends Application{
     HBox froggerLine;
     ImageView frog;
     ImageView twenty;
-
+    
     /**
      *{@inheritDoc}
      */

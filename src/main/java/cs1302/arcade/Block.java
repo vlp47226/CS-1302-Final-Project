@@ -16,7 +16,7 @@ public class Block extends VBox{
     public final static int[] randomNum = {2, 4};
     public final static int[] playableNumbers = {2,4,8,16,32,64,128,256,512,1024,2048};
     Image[] i;
-
+    
     /**
      *This constructor make an empty block
      */
@@ -43,7 +43,7 @@ public class Block extends VBox{
         this.isEmpty = isEmpty;
         this.getChildren().add(iv);
     }
-
+    
     /**
      *This constructor is used for creating a Block of a given value.
      *
@@ -65,7 +65,7 @@ public class Block extends VBox{
         isEmpty = false;
         this.getChildren().add(iv);
     }
-
+    
     /**
      *This method sets the block as empty or not.
      *
@@ -74,7 +74,7 @@ public class Block extends VBox{
     public void setIsEmpty(boolean isEmpty){
         this.isEmpty = isEmpty;
     }
-
+    
     /**
      *This method gets the value of the emptiness of the block
      *
@@ -92,7 +92,7 @@ public class Block extends VBox{
     public void setValue(int a){
         valueInside = a;
     }
-
+    
     /**
      *This method gets the value of the block
      *
@@ -101,7 +101,7 @@ public class Block extends VBox{
     public int getValue(){
         return valueInside;
     }
-
+    
     /**
      *This method gets if the block is combined
      *
@@ -110,7 +110,7 @@ public class Block extends VBox{
     public boolean isCombinedBlock(){
         return isCombined;
     }
-
+    
     /**
      *This method sets if the block is combined
      *
@@ -119,7 +119,7 @@ public class Block extends VBox{
     public void setIsCombined(boolean combined){
         isCombined = combined;
     }
-
+    
     /**
      *This method sets the images of the block.
      */
@@ -137,6 +137,6 @@ public class Block extends VBox{
         i[9] = new Image("file:src/main/resources/1024.png");
         i[10] = new Image("file:src/main/resources/2048.png");
     }
-        
+    
     
 }

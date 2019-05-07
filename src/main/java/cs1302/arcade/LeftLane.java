@@ -17,7 +17,7 @@ public class LeftLane extends Group{
     Rectangle r;
     Car[] cars;
     Color special;
-
+    
     /**
      *This constructor sets up the LeftLane.
      *
@@ -47,7 +47,7 @@ public class LeftLane extends Group{
         r.setFill(special);
         this.getChildren().addAll(r,cars[0],cars[1],cars[2]);
     }
-
+    
     /**
      *This method gets the array of Cars in the lane.
      *
