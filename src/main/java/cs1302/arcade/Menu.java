@@ -80,6 +80,7 @@ public class Menu extends Application{
      *This method shows the directions for Frogger.
      */
     public void showDirections(){
+        //Make the alert, set the text, size, then show it
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Frogger:\nWelcome to Frogger!\nTo Play, use the arrow keys."
                              +"\nYou start with 150 points. Every level gives you 100 points."

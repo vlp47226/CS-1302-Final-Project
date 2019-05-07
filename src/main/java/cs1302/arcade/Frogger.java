@@ -33,24 +33,39 @@ import javafx.util.Duration;
  *This class holds the code for the Frogger Game. It extends Stage.
  */
 public class Frogger extends Stage{
+    //The frogger group to hold everything
     Group frogger;
+    //The frog itself
     Group frog;
+    //The first river
     River river;
+    //The second river
     River river2;
+    //The third river
     River river3;
+    //The first lane
     LeftLane l;
+    //The second lane
     RightLane l2;
+    //The third lane
     LeftLane l3;
+    //The fourth lane
     RightLane l4;
+    //The frog image
     ImageView frogBoy;
+    //The green rectangle
     Rectangle r;
+    //The lives and levels
     public int lives;
     public int level;
+    //The level and lives counter, and the text holder
     Text levelCounter;
     Text lifeCounter;
     HBox textHolder;
+    //The score, score holder
     public int score;
     Text scoreCounter;
+    //The timeline for the animations
     Timeline timeline;
 
     /**
@@ -64,42 +79,51 @@ public class Frogger extends Stage{
      *This method sets up the game.
      */
     public void start(){
+        //Set up the timeline, text holder, frogger, and a vbox
         timeline = new Timeline();
         textHolder = new HBox();
         frogger = new Group();
         VBox v = new VBox();
+        //Set up the lives, score, level, and the holders of each
         lives = 3;
         level = 1;
         score = 150;
         lifeCounter = new Text("Lives: " + lives);
         levelCounter = new Text("Level: " + level);
         scoreCounter = new Text("Score: " + score);
+        //Set up the frog group, the ImageView, set the x and y for the ImageView
         frog = new Group();
         Image frogg = new Image("file:src/main/resources/frog.png",50.0,50.0,true,true);
         frogBoy = new ImageView(frogg);
         frogBoy.setX(325);
         frogBoy.setY(640);
+        //Set up the Rectangle
         r = new Rectangle(650.0, 430.0);
         r.setX(0);
         r.setY(0);
         r.setFill(Color.GREEN);
+        //Set the lanes and rivers, add the ImageView to frog, and set on key pressed
         setLanesAndRivers();
         frog.getChildren().add(frogBoy);
         frog.setOnKeyPressed(createKeyHandler());
+        //Add the children to the larger group, and the counters to the holder, with spacing
         frogger.getChildren().addAll(frog,l ,l2 ,l3 ,l4 ,r, river, river2, river3);
         textHolder.getChildren().addAll(lifeCounter,scoreCounter, levelCounter);
+        textHolder.setSpacing(20.0);
+        //Add the holder and group to the vbox
         v.getChildren().addAll(textHolder,frogger);
+        //put the river to front, start the movement, and put the ImageView to the front
         river.toFront();
         startMovement();
         frog.toFront();
+        //Set the scene, title, size, and resizable of the stage
         Scene scene = new Scene(v, 650, 720);
         this.setTitle("Frogger");
         this.setScene(scene);
         this.sizeToScene();
         this.setResizable(false);
         frog.requestFocus();
-        
-    }
+    }//start
 
     /**
      *This method holdes the events for the KeyHandler for the game.
@@ -108,28 +132,35 @@ public class Frogger extends Stage{
      */
     private EventHandler<? super KeyEvent> createKeyHandler() {
         return event -> {
-            System.out.println(event);
+            //If left is hit
             if (event.getCode() == KeyCode.LEFT){
+                //If it is possible, move the frog 50 points left
                 if(!(frogBoy.getX()-50.0<=0.0)){
                     frogBoy.setX(frogBoy.getX() - 50.0);
-                }
-            }
+                }//if
+            }//if
+            //If right is hit
             if (event.getCode() == KeyCode.RIGHT){
+                //If it is possible, move the frog 50 points right
                 if(!(frogBoy.getX()+50.0>=600.0)){
                     frogBoy.setX(frogBoy.getX() + 50.0);
-                }
-            }
+                }//if
+            }//if
+            //If up is hit
             if (event.getCode() == KeyCode.UP){
+                //If it is possible, move the frog 50 points up
                 if(!(frogBoy.getY()-50.0<=0.0)){
                     frogBoy.setY(frogBoy.getY() - 50.0);
                     nextLevel();
-                }
-            }
+                }//if
+            }//if
+            //If down it hit
             if (event.getCode() == KeyCode.DOWN){
+                //If it is possible, move the frog 50 points down
                 if(!(frogBoy.getY()+50.0>=670.0)){
                     frogBoy.setY(frogBoy.getY() + 50.0);
-                }
-            }
+                }//if
+            }//if
             reset();// TODO bounds checking
         };
     } // createKeyHandler
@@ -138,54 +169,60 @@ public class Frogger extends Stage{
      *This method resets the frog is it is hit by a car.
      */
     public void reset(){
+        //For every car in lane one
         for(Car c : l.getCar()){
+            //if the frog hits, reset it. If you lose, call you lose
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
-                if(lives == 0){
-                    youLoseXD();
-                }
-            }
-        }
+                if(lives == 0){ youLoseXD();}
+            }//if
+        }//for
+        //For every car in lane two
         for(Car c : l2.getCar()){
+            //if the frog hits, reset it. If you lose, call you lose
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
-                if(lives == 0){
-                    youLoseXD();
-                }
-            }
-        }
+                if(lives == 0){youLoseXD();}
+            }//if
+        }//for
+        //For every car in lane three
         for(Car c : l3.getCar()){
+            //if the frog hits, reset it. If you lose, call you lose
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
-                if(lives == 0){
-                    youLoseXD();
-                }
-            }
-        }
+                if(lives == 0){youLoseXD();}
+            }//if
+        }//for
+        //For every car in lane four
         for(Car c : l4.getCar()){
+            //if the frog hits, reset it. If you lose, call you lose
             if(frogBoy.intersects(c.getBoundsInLocal())){
                 resetFrog();
-                if(lives == 0){
-                    youLoseXD();
-                }
-            }
-        }
-        
-    }
+                if(lives == 0){youLoseXD();}
+            }//if
+        }//for
+    }//reset
 
     /**
      *This method sets up the next level of the game.
      */
     public void nextLevel(){
+        //If moving up more would put it at or below 0
         if(frogBoy.getY()-50.0 <= 0){
+            //Set the frog back
             frogBoy.setX(325);
             frogBoy.setY(640);
+            //Add 100 to the score, and change the score counter
             score += 100;
             scoreCounter.setText("Score: " + score);
+            //If the next level would be four, you win
             if(level+1 == 4){youWin();}
+            //else
             else{
+                //Add to the level and change the counter
                 level += 1;
                 levelCounter.setText("Level: " + level);
+                //Start the movement of all the lanes and rivers again
                 moveLeft(l);
                 moveRight(l2);
                 moveLeft(l3);
@@ -193,24 +230,24 @@ public class Frogger extends Stage{
                 moveLogLeft(river);
                 moveLogRight(river2);
                 moveLogLeft(river3);
-            }
-        }
-    }
+            }//else
+        }//if
+    }//nextLevel
 
     /**
      *This method resets the frog.
      */
     public void resetFrog(){
+        //Set the frog back to the beginning
         frogBoy.setX(325);
         frogBoy.setY(640);
+        //Remove one life and 50 points. If you are out of lives, you lose
         lives -=1;
         lifeCounter.setText("Lives: " + lives);
         score -= 50;
         scoreCounter.setText("Score: " + score);
-        if(lives == 0){
-            youLoseXD();
-        }
-    }
+        if(lives == 0){youLoseXD();}
+    }//resetFrog
 
     /**
      *This method allows one to get the frog
