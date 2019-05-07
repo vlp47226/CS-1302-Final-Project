@@ -132,12 +132,13 @@ public class TwentyFortyEight extends Stage{
     public void shiftToRight(){
         direction.setText("Right");
         boolean possible = false;
-        for(int i = 0; i<16; i++){
-            if (blocks[i].getIsEmpty()){possible = true;}
+        for(int i = 0; i<16; i++){ //checks if any of the blocks can shift to the right
+            if (blocks[i].getIsEmpty()){possible = true;} //checks for any empty blocks
             else if (i < 3 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
             else if (i < 7 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
             else if (i < 11 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
             else if (i < 15 && blocks[i+1].getValue()==blocks[i].getValue()){possible = true;}
+            //each if statement checks for if the block and the one to the right can merge
         }
         if(possible){
             shiftRightHelper(0,2);
@@ -173,13 +174,15 @@ public class TwentyFortyEight extends Stage{
         for(int i = indexTwo; i >= indexOne; i--){
             for (int j = i+1; j <= indexTwo+1; j++) {
                 if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                    blocks[j] = blocks[j-1];
-                    blocks[j-1] = new Block();      
+                    blocks[j] = blocks[j-1]; //moves the block to the right if the block
+                    blocks[j-1] = new Block();  //next to is empty    
                 }
                 else if(blocks[j-1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
                         && blocks[j].getValue() == blocks[j-1].getValue()
                         && blocks[j-1].isCombinedBlock()==false
-                        && blocks[j].isCombinedBlock()==false){
+                        && blocks[j].isCombinedBlock()==false){ //if statement checks if the block
+                    //in question and the block to the right of it are both the same value and have
+                    // not previosuly combined given that they are both not empty
                     blocks[j] = new Block((blocks[j-1].getValue()+blocks[j].getValue()),true);
                     blocks[j-1] = new Block();
                     addToScore(blocks[j].getValue());
@@ -210,6 +213,8 @@ public class TwentyFortyEight extends Stage{
             else if (i < 16 && i > 13 && blocks[i-1].getValue()==blocks[i].getValue()){
                 possible = true;
             }
+            //these if else statements check for the possibility of shifting to the left due to
+            // the presence of an empty block or if two adjacent blocks are of the same value
         }
         if(possible){
             shiftLeftHelper(1,3);
@@ -243,13 +248,15 @@ public class TwentyFortyEight extends Stage{
         for(int i = indexOne; i <= indexTwo; i++){
             for(int j = i-1; j >= indexOne-1; j--) {
                 if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
-                    blocks[j] = blocks[j+1];
+                    blocks[j] = blocks[j+1]; //checks for empty blocks to the left
                     blocks[j+1] = new Block();      
                 }
                 else if(blocks[j+1].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
                         && blocks[j].getValue() == blocks[j+1].getValue()
                         && blocks[j+1].isCombinedBlock()==false
                         && blocks[j].isCombinedBlock()==false){
+                    //checks for identical block numbers in blocks adjacent to each other
+                    //given that they are not empty
                     blocks[j] = new Block((blocks[j+1].getValue()+blocks[j].getValue()),true);
                     blocks[j+1] = new Block();
                     addToScore(blocks[j].getValue());
@@ -266,10 +273,10 @@ public class TwentyFortyEight extends Stage{
         boolean possible = false;
         for(int i = 0; i<16; i++){
             if(blocks[i].getIsEmpty()){
-                possible = true;
+                possible = true; //checks for empty blocks
             }
             else if (i > 4 && blocks[i-4].getValue()==blocks[i].getValue()){possible = true;}
-        }
+        } //checks for identical block values adjacent to each other
         if(possible){
             shiftUpHelper(4,12);
             shiftUpHelper(5,13);
@@ -311,6 +318,8 @@ public class TwentyFortyEight extends Stage{
                         && blocks[j].getValue() == blocks[j+4].getValue()
                         && blocks[j+4].isCombinedBlock()==false
                         && blocks[j].isCombinedBlock()==false){
+                    //checks for identical block numbers in blocks adjacent to each other
+                    //given that they are not empty
                     blocks[j] = new Block((blocks[j+4].getValue()+blocks[j].getValue()),true);
                     blocks[j+4] = new Block();
                     addToScore(blocks[j].getValue());
@@ -326,11 +335,11 @@ public class TwentyFortyEight extends Stage{
         direction.setText("Down");
         boolean possible = false;
         for(int i = 0; i<16; i++){
-            if(blocks[i].getIsEmpty()){
+            if(blocks[i].getIsEmpty()){//checks for empty blocks
                 possible = true;
             }
             else if (i < 12 && blocks[i+4].getValue()==blocks[i].getValue()){possible = true;}
-        }
+        } //checks for identical block values adjacent to each other
         if(possible){
             shiftDownHelper(0,8);
             shiftDownHelper(1,9);
@@ -366,11 +375,13 @@ public class TwentyFortyEight extends Stage{
                 if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==true){
                     blocks[j] = blocks[j-4];
                     blocks[j-4] = new Block();         
-                }
+                }//checks for empty blocks below it
                 else if(blocks[j-4].getIsEmpty()==false&&blocks[j].getIsEmpty()==false
                         && blocks[j].getValue() == blocks[j-4].getValue()
                         && blocks[j-4].isCombinedBlock()==false
                         && blocks[j].isCombinedBlock()==false){
+                    //checks for identical block numbers in blocks adjacent to each other
+                    //given that they are not empty
                     blocks[j] = new Block((blocks[j].getValue()+blocks[j-4].getValue()),true);
                     blocks[j-4] = new Block();
                     addToScore(blocks[j].getValue());
