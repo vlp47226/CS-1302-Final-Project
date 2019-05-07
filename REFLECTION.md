@@ -40,3 +40,11 @@ Here is a sample entry (delete this line; also: feel free to copy/paste/modify):
 2. **TODO:** Get collision to work, get logs to work, add levels, and code the endgame.
 
 3. **PROB:** Coding is hard.
+
+## TUE 2019-05-07 @ 3:30 PM EST
+
+1. **DONE:** We finished. We secured the bag. We got the bread. The narwhals have baconed. All that good stuff
+
+2. **TODO:** 3 more years of college
+
+3. **PROB:** 3 more years of college
