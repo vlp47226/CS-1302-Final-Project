@@ -265,18 +265,23 @@ public class Frogger extends Stage{
      */
     public void moveLeft(LeftLane left){
         EventHandler<ActionEvent> handler = event ->{
+            //For every car in the left
             for(Car c : left.getCar()){
+                //Make it visible if it moves into frame
                 if(c.getX()+1>=0&&(!c.isVisible())){c.setVisible(true);}
+                //Move it and adjust it for frame
                 c.setX(c.getX()+1);
                 if(c.getX()==650){
                     c.setX(r.getX()-50);
                     c.setVisible(false);
                 }
+                //If it hits a frog, reset it
                 if(c.intersects(frogBoy.getBoundsInLocal())){
                     resetFrog();
                 }
             }
         };
+        //Set up the level, then add it to the timeline
         KeyFrame keyFrame = new KeyFrame(Duration.millis(1000/60), handler);
         if(level == 2){
             keyFrame = new KeyFrame(Duration.millis(1000/90), handler);
@@ -296,18 +301,23 @@ public class Frogger extends Stage{
      */
     public void moveRight(RightLane right){
         EventHandler<ActionEvent> handler = event ->{
+            //for every car in right
             for(Car c : right.getCar()){
+                //Make it visible if it moves into frame
                 if(c.getX()-1<550&&(!c.isVisible())){c.setVisible(true);}
+                //Move it and adjust it for frame
                 c.setX(c.getX()-1);
                 if(c.getX()== 0){
                     c.setX(650+50);
                     c.setVisible(false);
                 }
+                //If it hits a frog, reset it
                 if(c.intersects(frogBoy.getBoundsInLocal())){
                     resetFrog();
                 }
             }
         };
+        //Set up level one, two, and three, then add it to the timeline
         KeyFrame keyFrame = new KeyFrame(Duration.millis(1000/60), handler);
         if(level == 2){
             keyFrame = new KeyFrame(Duration.millis(1000/90), handler);
@@ -326,7 +336,9 @@ public class Frogger extends Stage{
      *@param left the River.
      */
     public void moveLogLeft(River left){
+        //Set up the handler
         EventHandler<ActionEvent> handler = event ->{
+            //For every log in left
             for(Log l : left.getLogs()){
                 if(l.getX()+1>=0&&(!l.isVisible())){l.setVisible(true);}
                 l.setX(l.getX()+1);
@@ -334,16 +346,20 @@ public class Frogger extends Stage{
                     l.setX(r.getX()-50);
                     l.setVisible(false);
                 }
+                //If it intersects the frog, move the frog as well
                 if(l.intersects(frogBoy.getBoundsInLocal())){
                     frogBoy.setX(frogBoy.getX()+1);
                 }
             }
             int numOfLogsIntersect = 0;
+            //For every log in left
             for(Log l : left.getLogs()){
+                //if it intersects, add to the integer
                 if(l.intersects(frogBoy.getBoundsInLocal())){
                     numOfLogsIntersect++;
                 }
             }
+            //If the frog intersects none and the y is the same, reset it.
             if(numOfLogsIntersect == 0 && frogBoy.getY() == left.getY()){
                 resetFrog();
             }
@@ -366,66 +382,81 @@ public class Frogger extends Stage{
      *@param left the River.
      */
     public void moveLogRight(River right){
+        //Make a new Event handler
         EventHandler<ActionEvent> handler = event ->{
+            //For every log in right
             for(Log l : right.getLogs()){
+                //If it comes into frame, set it to visible
                 if(l.getX()-1<550&&(!l.isVisible())){l.setVisible(true);}
+                //Move it, and adjust if it moves out of frame
                 l.setX(l.getX()-1);
                 if(l.getX()== 0){
                     l.setX(650+50);
                     l.setVisible(false);
-                }
+                }//if
+                //If it intersects the frog, move the frog as well
                 if(l.intersects(frogBoy.getBoundsInLocal())){
                     frogBoy.setX(frogBoy.getX()-1);
-                }
-            }
+                }//if
+            }//for
+            //Set the int
             int numOfLogsIntersect = 0;
+            //For every log in right
             for(Log l : right.getLogs()){
+                //if it intersects, add to the integer
                 if(l.intersects(frogBoy.getBoundsInLocal())){
                     numOfLogsIntersect++;
-                }
-            }
+                }//if
+            }//for
+            //If the frog intersects none and the y is the same, reset it.
             if(numOfLogsIntersect == 0 && frogBoy.getY() == right.getY()){
                 resetFrog();
             }
         };
+        //Set up the keyframe, then add it to the timeline and play
         KeyFrame keyFrame = new KeyFrame(Duration.millis(1000/(60+(30*(level-1)))), handler);
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
-    }
+    }//moveLogRight
 
     /**
      *This method sets up the winning of the user.
      */
     public void youWin(){
+        //Stop the timeline, clear the keyFrames
         timeline.stop();
         timeline.getKeyFrames().clear();
+        //Make a new Alert, show it, then call start again
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("You Win!\nYour Score: "+score+
                              "\nPress New Game for a new Game, Exit the game to go back to menu.");
         alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
         start();
-    }
+    }//youWin
 
     /**
      *This method sets up the losing of the user.
      */
     public void youLoseXD(){
+        //Stop the timelinne, clear the keyFrames
         timeline.stop();
         timeline.getKeyFrames().clear();
+        //Make a new Alert, show it, then call start again
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("You Lose!\nYour Score: "+score+
                              "\nPress Ok for a new Game, Exit the game to go back to menu.");
         alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
         start();
-    }
+    }//youLoseXD
 
     /**
      *This method sets the lanes and rivers for the start method
      */
     public void setLanesAndRivers(){
+        //Set the lanes and rivers
         l = new LeftLane(0,((int)frogBoy.getY())-50, 0);
         l2 = new RightLane(0,((int)frogBoy.getY())-100, 650);
         l3 = new LeftLane(0,((int)frogBoy.getY())-150, 0);
@@ -433,13 +464,15 @@ public class Frogger extends Stage{
         river = new River(0, ((int) frogBoy.getY())-300, 100);
         river2 = new River(0, ((int) frogBoy.getY())-350,100);
         river3 = new River(0, ((int) frogBoy.getY())-400,100);
-    }
+    }//setLanesAndRivers
 
     /**
      *This method starts the movement of the lanes and rivers.
      */
     public void startMovement(){
+        //Set up the thread
         Thread t = new Thread(()->{
+                //Move every lane and river
                 Platform.runLater(()->{
                         moveLeft(l);
                         moveRight(l2);
@@ -450,7 +483,8 @@ public class Frogger extends Stage{
                         moveLogLeft(river3);
                     });
         });
+        //Start the thread
         t.setDaemon(true);
         t.start();
-    }
-}
+    }//startMovement
+}//Frogger

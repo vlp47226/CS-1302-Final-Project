@@ -44,6 +44,7 @@ public class Menu extends Application{
         froggerLine = new HBox();
         twentyFortyEight = new Button("2048");
         twentyFortyEight.setOnAction((ActionEvent e)->{
+                showTwentyDirections();
                 one = new TwentyFortyEight();
                 one.start();
                 one.show();
@@ -63,7 +64,7 @@ public class Menu extends Application{
         frog = new ImageView(frogg);
         froggerLine.getChildren().addAll(frogger, frog);
         froggerLine.setAlignment(Pos.CENTER);
-        text = new Text("MobaXterm Penguins\nArcade Games!");
+        text = new Text("MobaXterm Penguins\n Arcade Games!");
         exit = new Button("Exit");
         exit.setOnAction((ActionEvent a)->{System.exit(0);});
         menu.getChildren().addAll(text,froggerLine,twentyLine,exit);
@@ -86,6 +87,19 @@ public class Menu extends Application{
                              +"\nYou start with 150 points. Every level gives you 100 points."
                              + "Get as close to 450 as you can! Don't get hit by cars, you'll lose"
                              + "50 points!");
+        alert.getDialogPane().setPrefSize(400,400);
+        alert.showAndWait();
+    }
+    /**
+     *This method shows the directions for 2048.
+     */
+    public void showTwentyDirections(){
+        //Make the alert, set the text, size, then show it
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("2048:\nWelcome to 2048!\nTo Play, use the arrow keys."
+                             +"\nYou start with 0 points. Combination adds the amount of points it "
+                             + "combines to. The goal is to get to 2048! If you are unable to move "
+                             + "you lose!");
         alert.getDialogPane().setPrefSize(400,400);
         alert.showAndWait();
     }
