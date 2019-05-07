@@ -67,14 +67,14 @@ public class Frogger extends Stage{
     Text scoreCounter;
     //The timeline for the animations
     Timeline timeline;
-
+    
     /**
      *This is simply a simple constructor to call super.
      */
     public Frogger(){
         super();
     }
-
+    
     /**
      *This method sets up the game.
      */
@@ -124,7 +124,7 @@ public class Frogger extends Stage{
         this.setResizable(false);
         frog.requestFocus();
     }//start
-
+    
     /**
      *This method holdes the events for the KeyHandler for the game.
      *
@@ -164,7 +164,7 @@ public class Frogger extends Stage{
             reset();// TODO bounds checking
         };
     } // createKeyHandler
-
+    
     /**
      *This method resets the frog is it is hit by a car.
      */
@@ -202,7 +202,7 @@ public class Frogger extends Stage{
             }//if
         }//for
     }//reset
-
+    
     /**
      *This method sets up the next level of the game.
      */
@@ -233,7 +233,7 @@ public class Frogger extends Stage{
             }//else
         }//if
     }//nextLevel
-
+    
     /**
      *This method resets the frog.
      */
@@ -248,7 +248,7 @@ public class Frogger extends Stage{
         scoreCounter.setText("Score: " + score);
         if(lives == 0){youLoseXD();}
     }//resetFrog
-
+    
     /**
      *This method allows one to get the frog
      *
@@ -293,7 +293,7 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-
+    
     /**
      *This method takes a lane which starts on the right and moves it left.
      *
@@ -329,7 +329,7 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-
+    
     /**
      *This method takes a river which starts on the left and moves it right.
      *
@@ -375,7 +375,7 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
-
+    
     /**
      *This method takes a river which starts on the right and moves it left.
      *
@@ -419,7 +419,7 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }//moveLogRight
-
+    
     /**
      *This method sets up the winning of the user.
      */
@@ -435,7 +435,7 @@ public class Frogger extends Stage{
         alert.showAndWait();
         start();
     }//youWin
-
+    
     /**
      *This method sets up the losing of the user.
      */
@@ -451,7 +451,7 @@ public class Frogger extends Stage{
         alert.showAndWait();
         start();
     }//youLoseXD
-
+    
     /**
      *This method sets the lanes and rivers for the start method
      */
@@ -465,7 +465,7 @@ public class Frogger extends Stage{
         river2 = new River(0, ((int) frogBoy.getY())-350,100);
         river3 = new River(0, ((int) frogBoy.getY())-400,100);
     }//setLanesAndRivers
-
+    
     /**
      *This method starts the movement of the lanes and rivers.
      */

@@ -1,4 +1,3 @@
-
 package cs1302.arcade;
 
 //imports
@@ -28,7 +27,7 @@ import javafx.scene.control.Alert;
  *seperately from the {@code Menu}.
  */
 public class TwentyFortyEight extends Stage{
-
+    
     //Instance variables
     Text gameName;
     Text direction;
@@ -39,14 +38,14 @@ public class TwentyFortyEight extends Stage{
     TilePane tilePane;
     Button newGame;
     public Block[] blocks;
-
+    
     /**
      *This constructor is a basic constructor which calls super.
      */
     public TwentyFortyEight(){
         super();
     }
-
+    
     /**
      *This method starts the game of 2048. It sets all of the instance variables, scores,
      *placements, and the tilepane.
@@ -83,10 +82,10 @@ public class TwentyFortyEight extends Stage{
         this.sizeToScene();
         this.setResizable(false);
         tilePane.requestFocus();
-
-
+        
+        
     }//start
-
+    
     /**
      *This method holdes the events for the KeyHandler for the game.
      *
@@ -125,7 +124,7 @@ public class TwentyFortyEight extends Stage{
             // TODO bounds checking
         };
     } // createKeyHandler
-
+    
     /**
      *This method shifts the blocks to the right when right is pushed
      */
@@ -161,9 +160,9 @@ public class TwentyFortyEight extends Stage{
         if(checkWin()){
             youWin();
         }
-
+        
     }
-
+    
     /**
      *This method shifts the blocks right by specified indices.
      *
@@ -190,7 +189,7 @@ public class TwentyFortyEight extends Stage{
             }
         }
     }
-
+    
     /**
      *This method shifts the blocks to the left when left is pushed
      */
@@ -237,7 +236,7 @@ public class TwentyFortyEight extends Stage{
         }
         
     }
-
+    
     /**
      *This method shifts the blocks left by specified indices.
      *
@@ -264,7 +263,7 @@ public class TwentyFortyEight extends Stage{
             }
         }
     }
-
+    
     /**
      *This method shifts the blocks up when up is pushed
      */
@@ -290,7 +289,7 @@ public class TwentyFortyEight extends Stage{
         tilePane.getChildren().clear();
         for (int i = 0; i < 16; i++) {
             tilePane.getChildren().add(blocks[i]);
-
+            
         }
         vbox.getChildren().set(2,tilePane);
         if(!checkPossible()){
@@ -300,7 +299,7 @@ public class TwentyFortyEight extends Stage{
             youWin();
         }
     }
-
+    
     /**
      *This method shifts the blocks up by specified indices.
      *
@@ -327,7 +326,7 @@ public class TwentyFortyEight extends Stage{
             }
         }
     }
-
+    
     /**
      *This method shifts the blocks down when down is pushed
      */
@@ -362,7 +361,7 @@ public class TwentyFortyEight extends Stage{
             youWin();
         }
     }
-
+    
     /**
      *This method shifts the blocks down by specified indices.
      *
@@ -389,7 +388,7 @@ public class TwentyFortyEight extends Stage{
             }
         }
     }
-
+    
     /**
      *This method adds to the Score by some integer.
      *
@@ -400,7 +399,7 @@ public class TwentyFortyEight extends Stage{
         label = new Label("Score\n" + score);
         hbox.getChildren().set(1, label);
     }
-
+    
     /**
      *This method sets the blocks for the beginning of the game
      */
@@ -415,7 +414,7 @@ public class TwentyFortyEight extends Stage{
             tilePane.getChildren().add(b);
         }
     }
-
+    
     /**
      *This method randomly places a two or four
      */
@@ -429,7 +428,7 @@ public class TwentyFortyEight extends Stage{
             }
         }
     }
-
+    
     /**
      *This method alerts the user of their loss
      */
@@ -440,7 +439,7 @@ public class TwentyFortyEight extends Stage{
         alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
     }
-
+    
     /**
      *This method checks the possibility of the game.
      *
@@ -467,7 +466,7 @@ public class TwentyFortyEight extends Stage{
         }
         return false;
     }
-
+    
     /**
      *This method checks the right of the block of the given index.
      *
@@ -476,7 +475,7 @@ public class TwentyFortyEight extends Stage{
     public boolean checkRight(int i){
         return blocks[i].getValue()==blocks[i+1].getValue();
     }
-
+    
     /**
      *This method checks the left of the block of the given index.
      *
@@ -485,7 +484,7 @@ public class TwentyFortyEight extends Stage{
     public boolean checkLeft(int i){
         return blocks[i].getValue()==blocks[i-1].getValue();
     }
-
+    
     /**
      *This method checks the up of the block of the given index.
      *
@@ -494,7 +493,7 @@ public class TwentyFortyEight extends Stage{
     public boolean checkUp(int i){
         return blocks[i].getValue()==blocks[i-4].getValue();
     }
-
+    
     /**
      *This method checks the down of the block of the given index.
      *
@@ -503,7 +502,7 @@ public class TwentyFortyEight extends Stage{
     public boolean checkDown(int i){
         return blocks[i].getValue()==blocks[i+4].getValue();
     }
-
+    
     /**
      *This method alerts the user of their win
      */
@@ -527,7 +526,7 @@ public class TwentyFortyEight extends Stage{
         }
         return false;
     }
-
+    
     /**
      *This method sets up a new game when the button is pushed.
      *
