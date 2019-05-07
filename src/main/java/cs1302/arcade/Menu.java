@@ -8,11 +8,14 @@ import javafx.stage.Stage;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 
 /**
  *This class is the menu for the arcade.
@@ -26,6 +29,10 @@ public class Menu extends Application{
     Text text;
     TwentyFortyEight one;
     Frogger two;
+    HBox twentyLine;
+    HBox froggerLine;
+    ImageView frog;
+    ImageView twenty;
 
     /**
      *{@inheritDoc}
@@ -33,6 +40,8 @@ public class Menu extends Application{
     @Override
     public void start(Stage stage){
         menu = new VBox();
+        twentyLine = new HBox();
+        froggerLine = new HBox();
         twentyFortyEight = new Button("2048");
         twentyFortyEight.setOnAction((ActionEvent e)->{
                 one = new TwentyFortyEight();
@@ -46,10 +55,20 @@ public class Menu extends Application{
                 two.start();
                 two.show();
             });
+        Image twentyFour = new Image("file:src/main/resources/2048.png",25.0,25.0,true,true);
+        twenty = new ImageView(twentyFour);
+        twentyLine.getChildren().addAll(twentyFortyEight, twenty);
+        twentyLine.setAlignment(Pos.CENTER);
+        Image frogg = new Image("file:src/main/resources/frog.png",25.0,25.0,true,true);
+        frog = new ImageView(frogg);
+        froggerLine.getChildren().addAll(frogger, frog);
+        froggerLine.setAlignment(Pos.CENTER);
         text = new Text("MobaXterm Penguins\nArcade Games!");
         exit = new Button("Exit");
         exit.setOnAction((ActionEvent a)->{System.exit(0);});
-        menu.getChildren().addAll(text,frogger,twentyFortyEight,exit);
+        menu.getChildren().addAll(text,froggerLine,twentyLine,exit);
+        menu.setAlignment(Pos.CENTER);
+        menu.setSpacing(50.0);
         Scene scene = new Scene(menu, 400, 400);
         stage.setTitle("Arcade!");
         stage.setScene(scene);
