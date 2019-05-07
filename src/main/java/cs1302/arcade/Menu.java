@@ -14,7 +14,11 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 
+/**
+ *This class is the menu for the arcade.
+ */
 public class Menu extends Application{
+    //The instance variables
     VBox menu;
     Button twentyFortyEight;
     Button frogger;
@@ -22,6 +26,10 @@ public class Menu extends Application{
     Text text;
     TwentyFortyEight one;
     Frogger two;
+
+    /**
+     *{@inheritDoc}
+     */
     @Override
     public void start(Stage stage){
         menu = new VBox();
@@ -48,6 +56,10 @@ public class Menu extends Application{
         stage.sizeToScene();
         stage.show();
     }
+    
+    /**
+     *This method shows the directions for Frogger.
+     */
     public void showDirections(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Frogger:\nWelcome to Frogger!\nTo Play, use the arrow keys."

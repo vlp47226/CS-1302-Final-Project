@@ -29,6 +29,9 @@ import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 
+/**
+ *This class holds the code for the Frogger Game. It extends Stage.
+ */
 public class Frogger extends Stage{
     Group frogger;
     Group frog;
@@ -49,10 +52,17 @@ public class Frogger extends Stage{
     public int score;
     Text scoreCounter;
     Timeline timeline;
-    
+
+    /**
+     *This is simply a simple constructor to call super.
+     */
     public Frogger(){
         super();
     }
+
+    /**
+     *This method sets up the game.
+     */
     public void start(){
         timeline = new Timeline();
         textHolder = new HBox();
@@ -73,32 +83,14 @@ public class Frogger extends Stage{
         r.setX(0);
         r.setY(0);
         r.setFill(Color.GREEN);
-        l = new LeftLane(0,((int)frogBoy.getY())-50, 0);
-        l2 = new RightLane(0,((int)frogBoy.getY())-100, 650);
-        l3 = new LeftLane(0,((int)frogBoy.getY())-150, 0);
-        l4 = new RightLane(0,((int)frogBoy.getY())-200, 650);
-        river = new River(0, ((int) frogBoy.getY())-300, 100);
-        river2 = new River(0, ((int) frogBoy.getY())-350,100);
-        river3 = new River(0, ((int) frogBoy.getY())-400,100);
+        setLanesAndRivers();
         frog.getChildren().add(frogBoy);
         frog.setOnKeyPressed(createKeyHandler());
         frogger.getChildren().addAll(frog,l ,l2 ,l3 ,l4 ,r, river, river2, river3);
         textHolder.getChildren().addAll(lifeCounter,scoreCounter, levelCounter);
         v.getChildren().addAll(textHolder,frogger);
         river.toFront();
-        Thread t = new Thread(()->{
-                Platform.runLater(()->{
-                        moveLeft(l);
-                        moveRight(l2);
-                        moveLeft(l3);
-                        moveRight(l4);
-                        moveLogLeft(river);
-                        moveLogRight(river2);
-                        moveLogLeft(river3);
-                    });
-        });
-        t.setDaemon(true);
-        t.start();
+        startMovement();
         frog.toFront();
         Scene scene = new Scene(v, 650, 720);
         this.setTitle("Frogger");
@@ -108,6 +100,12 @@ public class Frogger extends Stage{
         frog.requestFocus();
         
     }
+
+    /**
+     *This method holdes the events for the KeyHandler for the game.
+     *
+     *@return the EventHandler for the keys.
+     */
     private EventHandler<? super KeyEvent> createKeyHandler() {
         return event -> {
             System.out.println(event);
@@ -135,6 +133,10 @@ public class Frogger extends Stage{
             reset();// TODO bounds checking
         };
     } // createKeyHandler
+
+    /**
+     *This method resets the frog is it is hit by a car.
+     */
     public void reset(){
         for(Car c : l.getCar()){
             if(frogBoy.intersects(c.getBoundsInLocal())){
@@ -170,14 +172,18 @@ public class Frogger extends Stage{
         }
         
     }
+
+    /**
+     *This method sets up the next level of the game.
+     */
     public void nextLevel(){
         if(frogBoy.getY()-50.0 <= 0){
+            frogBoy.setX(325);
+            frogBoy.setY(640);
+            score += 100;
+            scoreCounter.setText("Score: " + score);
             if(level+1 == 4){youWin();}
             else{
-                frogBoy.setX(325);
-                frogBoy.setY(640);
-                score += 100;
-                scoreCounter.setText("Score: " + score);
                 level += 1;
                 levelCounter.setText("Level: " + level);
                 moveLeft(l);
@@ -190,6 +196,10 @@ public class Frogger extends Stage{
             }
         }
     }
+
+    /**
+     *This method resets the frog.
+     */
     public void resetFrog(){
         frogBoy.setX(325);
         frogBoy.setY(640);
@@ -201,10 +211,21 @@ public class Frogger extends Stage{
             youLoseXD();
         }
     }
+
+    /**
+     *This method allows one to get the frog
+     *
+     *@return the frog
+     */
     public ImageView getFrogBoy(){
         return frogBoy;
     }
 
+    /**
+     *This method takes a lane which starts on the left and moves it right.
+     *
+     *@param left the LeftLane.
+     */
     public void moveLeft(LeftLane left){
         EventHandler<ActionEvent> handler = event ->{
             for(Car c : left.getCar()){
@@ -230,6 +251,12 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
+
+    /**
+     *This method takes a lane which starts on the right and moves it left.
+     *
+     *@param left the RightLane.
+     */
     public void moveRight(RightLane right){
         EventHandler<ActionEvent> handler = event ->{
             for(Car c : right.getCar()){
@@ -255,6 +282,12 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
+
+    /**
+     *This method takes a river which starts on the left and moves it right.
+     *
+     *@param left the River.
+     */
     public void moveLogLeft(River left){
         EventHandler<ActionEvent> handler = event ->{
             for(Log l : left.getLogs()){
@@ -289,6 +322,12 @@ public class Frogger extends Stage{
         timeline.getKeyFrames().add(keyFrame);
         timeline.play();
     }
+
+    /**
+     *This method takes a river which starts on the right and moves it left.
+     *
+     *@param left the River.
+     */
     public void moveLogRight(River right){
         EventHandler<ActionEvent> handler = event ->{
             for(Log l : right.getLogs()){
@@ -318,6 +357,9 @@ public class Frogger extends Stage{
         timeline.play();
     }
 
+    /**
+     *This method sets up the winning of the user.
+     */
     public void youWin(){
         timeline.stop();
         timeline.getKeyFrames().clear();
@@ -329,6 +371,9 @@ public class Frogger extends Stage{
         start();
     }
 
+    /**
+     *This method sets up the losing of the user.
+     */
     public void youLoseXD(){
         timeline.stop();
         timeline.getKeyFrames().clear();
@@ -338,5 +383,37 @@ public class Frogger extends Stage{
         alert.getDialogPane().setPrefSize(400,200);
         alert.showAndWait();
         start();
+    }
+
+    /**
+     *This method sets the lanes and rivers for the start method
+     */
+    public void setLanesAndRivers(){
+        l = new LeftLane(0,((int)frogBoy.getY())-50, 0);
+        l2 = new RightLane(0,((int)frogBoy.getY())-100, 650);
+        l3 = new LeftLane(0,((int)frogBoy.getY())-150, 0);
+        l4 = new RightLane(0,((int)frogBoy.getY())-200, 650);
+        river = new River(0, ((int) frogBoy.getY())-300, 100);
+        river2 = new River(0, ((int) frogBoy.getY())-350,100);
+        river3 = new River(0, ((int) frogBoy.getY())-400,100);
+    }
+
+    /**
+     *This method starts the movement of the lanes and rivers.
+     */
+    public void startMovement(){
+        Thread t = new Thread(()->{
+                Platform.runLater(()->{
+                        moveLeft(l);
+                        moveRight(l2);
+                        moveLeft(l3);
+                        moveRight(l4);
+                        moveLogLeft(river);
+                        moveLogRight(river2);
+                        moveLogLeft(river3);
+                    });
+        });
+        t.setDaemon(true);
+        t.start();
     }
 }

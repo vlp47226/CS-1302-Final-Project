@@ -10,10 +10,21 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 
+/**
+ *This method holds a RightLane for Frogger. This lane starts on the right. It extends Group.
+ */
 public class RightLane extends Group{
     Rectangle r;
     Car[] cars;
     Color special;
+
+    /**
+     *This constructor sets up the RightLane.
+     *
+     *@param x the x value of the lane.
+     *@param y the y value of the lane.
+     *@param carX the x value of the first Car
+     */
     public RightLane(int x, int y,int carX){
         super();
         special = new Color(0.3451,0.3451,0.3451,1);
@@ -36,6 +47,12 @@ public class RightLane extends Group{
         r.setFill(special);
         this.getChildren().addAll(r,cars[0],cars[1],cars[2]);
     }
+
+    /**
+     *This method gets the array of Cars in the lane.
+     *
+     *@return the array of Cars.
+     */
     public Car[] getCar(){
         return cars;
     }

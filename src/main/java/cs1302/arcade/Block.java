@@ -5,6 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ *This class holds the information for a Block in 2048. It extends a VBox.
+ */
 public class Block extends VBox{
     public boolean isEmpty;
     public boolean isCombined;
@@ -14,6 +17,9 @@ public class Block extends VBox{
     public final static int[] playableNumbers = {2,4,8,16,32,64,128,256,512,1024,2048};
     Image[] i;
 
+    /**
+     *This constructor make an empty block
+     */
     public Block(){
         super();
         setImageArray();
@@ -21,6 +27,12 @@ public class Block extends VBox{
         isCombined = false;
         isEmpty = true;
     }
+    
+    /**
+     *This constructor is used for creating a random Block of 2 or 4.
+     *
+     *@param isEmpty if the block is empty
+     */
     public Block(boolean isEmpty){
         super();
         setImageArray();
@@ -31,6 +43,13 @@ public class Block extends VBox{
         this.isEmpty = isEmpty;
         this.getChildren().add(iv);
     }
+
+    /**
+     *This constructor is used for creating a Block of a given value.
+     *
+     *@param value the value of the block
+     *@param combined if the block was combined
+     */
     public Block(int value, boolean combined){
         super();
         setImageArray();

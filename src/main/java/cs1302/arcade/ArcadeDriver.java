@@ -3,7 +3,7 @@ package cs1302.arcade;
 import javafx.application.Application;
 
 /** 
- * Driver for the {@code ArcadeApp} class.
+ * Driver for the Menu class.
  */
 public class ArcadeDriver {
 
