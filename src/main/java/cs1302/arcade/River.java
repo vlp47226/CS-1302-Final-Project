@@ -10,12 +10,18 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 
+/**
+ * This class makes river with logs in them. It extends Group
+ */
 public class River extends Group {
 
     Log[] logList;
     Color water;
     Rectangle r;
-
+    
+    /**
+     * River constructor initiliazing the log array and the rectangle to simulate the water
+     */
     public River(int x, int y, int logX) {
         super();
         water = Color.AQUA;
@@ -37,27 +43,22 @@ public class River extends Group {
          for (int i = 0; i < 3; i++) {
              logList[i].toFront();
          }
-
-        
     }
 
-
+    /**
+     * method that returns a River objects log array
+     * @returns array of logs
+     */
     public Log[] getLogs() {
         return logList;
     }
 
-    
+    /**
+     * method that returns the y coordinate of the river rectangle
+     * @returns y coordinate of reractangle
+     */
     public double getY(){
         return r.getY();
     }
-
-
-
-
-
-
-
-
-
 
 }//River.java
